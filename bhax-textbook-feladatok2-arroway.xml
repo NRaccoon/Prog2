@@ -22,7 +22,7 @@ Ugyanezt írjuk meg C++ nyelven is!
 	<para><link xlink:href="./Arroway/PolarGen.java"><filename>PolarGen.java</filename></link></para>
 	<para><link xlink:href="./Arroway/PolarGen.cpp"><filename>PolarGen.cpp</filename></link></para>
         <para>
-            A feladatot én egy boolean típusú változó segítségével oldottam meg, ami tárolta számomra az az információt hogy van-e már kiszámolt véletlenszerű szám, tehát azzal kezdtem az egészet, hogy létre hoztam egy nincsTarolt változót melynek true-t adtam értékül. Valamint egy double változót is létre hoztam amely a legenerált számot fogja értékül kapni majd mindig.
+            A feladatot én egy boolean típusú változó segítségével oldottam meg, ami tárolta számomra az az információt hogy van-e már kiszámolt véletlenszerű szám tárolva, tehát azzal kezdtem az egészet, hogy létre hoztam egy nincsTarolt változót melynek true-t adtam értékül. Valamint egy double változót is létre hoztam amely a legenerált számot fogja értékül kapni majd mindig.
 	</para>
 <programlisting language="java"><![CDATA[	boolean nincsTarolt = true;
 	double tarolt;]]></programlisting>
@@ -164,7 +164,7 @@ class Gagyi2{
 	De miért van ez?
 	</para>
 	<para>
-	A válasz egyszerű, a fent említett osztály gyorsítótárazási tulajdonságát kihasználva van lehetőségünk erre, ugyanis az integer [-128, 127] intervallumban már egy meglévő objektumról kapunk egy referenciát, ez pont a gyorsítótárazás miatt van, valószínűleg úgy gondolták ebben a tartományban használjuk leginkább a számokat és egy fajta könnyítés képp van ez így. Viszont ez épp elég ahoz hogy a t != x feltétel hamis értékkel térjen vissza, ezáltal a while feltétele is hamisra módusoljon, mivel ha már az egyik nem igaz akkor az egész hamis lesz.
+	A válasz egyszerű, a fent említett osztály gyorsítótárazási tulajdonságát kihasználva van lehetőségünk erre, ugyanis az integer [-128, 127] intervallumban már egy meglévő objektumról kapunk egy referenciát, ez pont a gyorsítótárazás miatt van, valószínűleg úgy gondolták ebben a tartományban használjuk leginkább a számokat és egy fajta könnyítés képp van ez így. Viszont ez épp elég ahoz hogy a t != x feltétel hamis értékkel térjen vissza, ezáltal a while feltétele is hamisra módusoljon, mivel ha már az egyik nem igaz akkor az egész hamis lesz.(JDK kép ként a forrást berakni!!!)
 	</para>
     </section>  
 
@@ -182,6 +182,14 @@ conditions-t! Yoda-conditionról bővebben: <link xlink:href="https://en.wikiped
         <para>
             A feladat az volt hogy olyan programot írjunk amely leáll, ha nem követjük a Yoda conditionst, azaz java.lang.NullPointer.Exceptionnal kilök. Én egy egyszerű, de talán szemléletes példát hoztam ennek bemutatására. Valamint a kódot "átírtam" a Yoda conditions követése szerint is, így láthatjuk mi a különbség.
         </para>
+<programlisting language="java"><![CDATA[public class Yoda{
+	public static void main (String[]args){
+		String yodaString = null;
+		if (yodaString.equals("Yoda")){
+		System.out.println ("Hurrá, egyenlő");
+		}	
+	}
+}]]></programlisting>
 	<para>
 	A fent megjelölt megoldás forrás első forrása (Yoda.java), az a feladat által igényelt fájl, ennek futása NullPointerExceptionnel lefog állni, ugyanis a string amihez hasonlítanánk a másik stringünket egy null pointer valójában, így maga az összehasonlítás nem lesz lehetséges, ugyanis null objektum metódusát akarnánk meghívni.
 	</para>
@@ -193,6 +201,14 @@ conditions-t! Yoda-conditionról bővebben: <link xlink:href="https://en.wikiped
 		</imageobject>
 	</mediaobject>
 	</figure>
+<programlisting language="java"><![CDATA[public class Yoda2{
+	public static void main (String[]args){
+		String yodaString = null;
+		if ("Yoda".equals(yodaString)){
+		System.out.println ("Hurrá, egyenlő");
+		}	
+	}
+}]]></programlisting>
 	<para>
 	A fent belinkelt 2. forrás pedig ugyan ez, csak annyi különbséggel, hogy ez esetben követtem a Yoda conditionst, így lefut gond nélkül a program és egyszerűen a várt "false" értéket fogja vissza adni. Ez azért lehetséges mert ez esetben a meglévő "Yoda" stringhez akarjuk hasonlítani a "null pointer" stringünket, ami egyértelműen nem egyenlő ugyan de az összehasonlítás önmaga lehetséges ellentétbe a másik kóddal.
 	</para>
@@ -216,8 +232,9 @@ alg.pdf</link> és csak ezt tanulmányozva írjuk meg Java nyelven a BBP algorit
 	<para>
             Megoldás forrása:                
         </para>
+	<para><link xlink:href="./Arroway/PiBBP.java"><filename>PiBBP.java</filename></link></para>
         <para>
-            A BBP (Bailey-Borwein-Plouf) algoritmus a BBP formulát hazsnálja alapul amit 1995-ben talált fel Simon Plouffe. Az algoritmus alkalmas a Pi hexa számjegyeinek meghatározására.
+            A BBP (Bailey-Borwein-Plouf) algoritmus a BBP formulát használja alapul amit 1995-ben talált fel Simon Plouffe. Az algoritmus alkalmas a Pi hexa számjegyeinek meghatározására.
         </para>
 	<para>
 	Erről lenne szó:
@@ -299,7 +316,7 @@ public static void main(String args[]){
 	System.out.print(new PiBBP(1000000));
 }
 }]]></programlisting>
-	<para>A program a futása végén kiírja számunkra a hexa jegyeket. Tehát így néz ki futtatás után:</para>
+	<para>A program a futása végén kiírja számunkra a hexa jegyeket a megadott számjegytől számítva. Tehát így néz ki futtatás után:</para>
 	<figure>
 	<title>PiBBP.java futása</title>
 	<mediaobject>
@@ -308,6 +325,7 @@ public static void main(String args[]){
 		</imageobject>
 	</mediaobject>
 	</figure>
+<para>Az eredmény a várt lett, visszakapjuk a hexa jegyeket gond nélkül. Még pedig a Pi hexadecimális kifejtését a 1000001. jegytől, ami a "6C65E5308".(részletesebben az egészet, you got this boii!!)</para>
     </section>  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 </chapter>                
