@@ -1,0 +1,381 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Caesar!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title><type>double **</type> háromszögmátrix</title>
+        <para>
+            Írj egy olyan <function>malloc</function> és <function>free</function>
+            párost használó C programot, amely helyet foglal
+            egy alsó háromszög mátrixnak a szabad tárban!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/1MRTuKwRsB0">https://youtu.be/1MRTuKwRsB0</link>,
+            <link xlink:href="https://youtu.be/RKbX5-EWpzA">https://youtu.be/RKbX5-EWpzA</link>.
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="Caesar/tm.c">
+                <filename>bhax/thematic_tutorials/bhax_textbook_IgyNeveldaProgramozod/Caesar/tm.c</filename>
+            </link> 
+        </para>
+        <para>
+        Bátfai Norbert Tanár úr kódját fogom bemutatni, valamint elemzeni.
+	</para>
+	<para>
+	Először is includeolni kell a szükséges könyvtárakat ami a szokásos stdio könyvtár lesz valamint mellette az stdlib könyvtár is kell ugyanis a mallocot majd így érhetjük el.
+	</para>
+<programlisting language="c"><![CDATA[#include <stdio.h>
+#include <stdlib.h>]]></programlisting>
+	<para>
+	Majd mainen belül az első amit teszünk az az hogy deklarálunk egy integer típusú "nr" változót amelyben majd az alsó háromszög mátrixunknak a sorainak a számát fogjuk tárolni. A forrásban ez 5 lesz, tehát 5 soros lesz az alsó háromszög mátrixunk, tehát 15 értéke lesz.
+        </para> 
+<programlisting language="c"><![CDATA[int nr = 5;]]></programlisting>
+	<para>
+	Valamint emellett még deklaráljuk a double **tm-et is. Valamint a tm-nek az aktuális memória címét kiíratjuk.
+	</para>
+<programlisting language="c"><![CDATA[double **tm;
+printf("%p\n", &tm);]]></programlisting>
+	<para>
+	A man 3 malloccal megtudjuk nézni hogy a malloc mit ad vissza. Láthatjuk hogy visszaad egy pointert, ha valami hibát észlel akkor pedig NULL-t add vissza, így ha azzal egyenlő akkor return -1-elünk így a hiba esetén "kilök" a program.
+	</para>
+<programlisting language="c"><![CDATA[ if ((tm = (double **) malloc (nr * sizeof (double *))) == NULL)
+    {
+        return -1;
+    }]]></programlisting>
+	<para>
+	Ezzel ráállítjuk a tm mutatót a memóriában malloc által lefoglalt terültre, persze ha az tudott foglalni, értelem szerűen ha nem tudott a program hibát fog lökni, viszont ha tudott akkor pedig kiírja a lefoglalt tár memóriacímét.
+	</para>
+	<figure>
+	<title>Double **</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Caesar/doublecscs.png" scale = "52"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	A képet Bátfai Norbert készítette, ami a következő oldalon fellelhető: <link xlink:href="https://youtu.be/1MRTuKwRsB0">https://youtu.be/1MRTuKwRsB0</link>
+	</para>
+	<para>
+	A következő kódcsipet pedig, egy for ciklus ami maga a foglalás igazából, ha nr értéke 5 akkor 5-ször fog lefutni és mindegyiknek megfelelőnyi bájtot foglal le, első sorban ugye i=0 azaz 1 doublenek 8 bájtnyit, i=1 esetén a második sorban két doublenek 2*8=16 bájtnyit stb...
+	</para>
+<programlisting language="c"><![CDATA[for (int i = 0; i < nr; ++i){
+        if ((tm[i] = (double *) malloc ((i + 1) * sizeof (double))) == NULL)
+        {
+            return -1;
+        }
+    }]]></programlisting>
+	<para>
+	A legvégén pedig felszabadítjuk a lefoglalt memóriát, ezt a free függvény segítségével tesszük meg valami a for ciklusok használatával, majd magát a tm mutatót is felszabadítjuk a free használatával.
+	</para>
+<programlisting language="c"><![CDATA[for (int i = 0; i < nr; ++i)
+        free (tm[i]);
+
+    free (tm);]]></programlisting>
+
+
+    </section>        
+    <section>
+        <title>C EXOR titkosító</title>
+        <para>
+            Írj egy EXOR titkosítót C-ben!
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="./Caesar/e.c">
+<filename>Titkosító</filename>
+</link>              
+        </para>
+	<para>
+	<link xlink:href="./Caesar/asd.txt">
+<filename>Titkosítandó szöveg</filename>
+</link>
+	</para>
+	<para>
+	<link xlink:href="./Caesar/titkos.txt">
+<filename>Titkosított szöveg</filename>
+</link>
+	</para>
+        <para>
+            A titkosító azt csinálja hogy a bemenetként kapott szöveget emberi szem számára olvashatatlanná változtatja még pedig a bitek száma alapján. Ehhez egy úgynevezett kulcsot használ amit szintén a felhasználó ad meg, a kulcs és a törő segítségével pedig az olvashatatlan karakter halmazból újra visszatudjuk majd állítani a szövegünket.
+        </para> 
+<programlisting language="c"><![CDATA[#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+#define MAX_KULCS 100
+#define BUFFER_MERET 256
+
+int
+main (int argc, char **argv)
+{
+
+  char kulcs[MAX_KULCS];
+  char buffer[BUFFER_MERET];
+
+  int kulcs_index = 0;
+  int olvasott_bajtok = 0;
+
+  int kulcs_meret = strlen (argv[1]);
+  strncpy (kulcs, argv[1], MAX_KULCS);
+
+  while ((olvasott_bajtok = read (0, (void *) buffer, BUFFER_MERET)))
+    {
+
+      for (int i = 0; i < olvasott_bajtok; ++i)
+	{
+
+	  buffer[i] = buffer[i] ^ kulcs[kulcs_index];
+	  kulcs_index = (kulcs_index + 1) % kulcs_meret;
+
+	}
+
+      write (1, buffer, olvasott_bajtok);
+
+    }
+}]]></programlisting>
+	<para>
+	Mint láthatjuk maga a titkosító, nem túl bonyolult és hosszúnak sem mondható egyáltalán. Valamint maga a titkosítás ideje se huzamos, emberek számára szinte azonnali. Ez majd a törésnél már nem lesz megfigyelhető.
+	</para>           
+    </section>        
+    <section>
+        <title>Java EXOR titkosító</title>
+        <para>
+            Írj egy EXOR titkosítót Java-ban!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="./Caesar/java.java">
+<filename>Java titkosító</filename>
+</link>             
+        </para>
+        <para>
+            Az előző feladat javás megvalósítása szükséges, ez alapjába véve nem lenne annyira nehéz feladat, mert ugyan vannak különbségek C és java között de átírni egy ekkora kódcsípetet nem sok idő ha ismerjük a javát és a c-t is. Számomra azért volt nehezebb feladat ez, mivel nem ismertem a javát, így először is a javával kellett ismerkednem utána a feladat forráskódjával.
+        </para>
+	<para>
+	Elsőnek is a legszembe tűnőbb az hogy a java objektum-orientált programozási nyelv, így már egy "Hello, World!" megírása is teljesen más mint C-ben, ugyanis classokat kell létrehozni és abban kell deklarálni/kidolgozni mindent.
+	</para>
+<programlisting language="java"><![CDATA[public class ExorTitkosító {
+    
+    public ExorTitkosító(String kulcsSzöveg,
+            java.io.InputStream bejövőCsatorna,
+            java.io.OutputStream kimenőCsatorna)
+            throws java.io.IOException {
+        
+        byte [] kulcs = kulcsSzöveg.getBytes();
+        byte [] buffer = new byte[256];
+        int kulcsIndex = 0;
+        int olvasottBájtok = 0;
+
+        while((olvasottBájtok =
+                bejövőCsatorna.read(buffer)) != -1) {
+            
+            for(int i=0; i<olvasottBájtok; ++i) {
+                
+                buffer[i] = (byte)(buffer[i] ^ kulcs[kulcsIndex]);
+                kulcsIndex = (kulcsIndex+1) % kulcs.length;
+                
+            }
+            
+            kimenőCsatorna.write(buffer, 0, olvasottBájtok);
+            
+        }
+        
+    }
+    
+    public static void main(String[] args) {
+        
+        try {
+            
+            new ExorTitkosító(args[0], System.in, System.out);
+            
+        } catch(java.io.IOException e) {
+            
+            e.printStackTrace();
+            
+        }
+        
+    }
+    
+}]]></programlisting>
+	<para>
+	Végül, ahhoz hogy futtassuk telepítenünk kell az openjdk-8-at amit a következőképpen tudunk leszedni és feltelepíteni:
+	</para>
+<programlisting language="c"><![CDATA[sudo apt-get install openjdk-8-jdk]]></programlisting>
+	<para>
+	A futtatáshoz pedig ezt kell begépelni a terminálba:
+	</para>
+<programlisting language="c"><![CDATA[javac ExorTitkosító.java
+java ExorTitkosító kulcs (pl:12345678) <tiszta.txt >titkos.txt]]></programlisting>
+    </section>        
+    <section>
+        <title>C EXOR törő</title>
+        <para>
+            Írj egy olyan C programot, amely megtöri az első feladatban előállított titkos szövegeket!
+        </para>
+        <para>
+            Megoldás forrása:  <link xlink:href="./Caesar/t.c">
+<filename>Törő</filename>
+</link>             
+        </para>
+	<para>
+	<link xlink:href="./Caesar/asd.txt">
+<filename>Titkosítandó szöveg</filename>
+</link>
+	</para>
+	<para>
+	<link xlink:href="./Caesar/titkos.txt">
+<filename>Titkosított szöveg</filename>
+</link>
+	</para>
+        <para>
+            A törő feladata a fentebb említett titkosító által létrehozott "titkos" szöveg visszafejtése, ugyanis a titkosító által kreált karakter halmaz értelmetlen és olvashatatlan az emberek számára.
+        </para>
+	<para>
+	A törő kódja már picit bonyolultabb és jóval hosszabb a titkosító társánál. Valamint futási ideje nagyságrendekkel nagyobb a titkosításnál. A törés a fordítás módjától, a szöveg és a kulcs hosszától is nagyban függ. A forrásoknál az általam titkosított szöveget is linkeltem, valamint annak a titkosított verzióját is, ezekben jól megfigyelhető milyen is az átalakítás. Ennek a szövegnek a titkosításának a törése körülbelül 20 percet vett/vesz igénybe ha a következő módon fordítjuk a törőt:
+	</para>
+<programlisting language="c"><![CDATA[gcc -o t t.c]]></programlisting>
+	<para>
+	És csak körülbelül 3 percbe telik ugyan ez ha így fordítjuk, és azután futtatjuk csak:
+	</para>
+<programlisting language="c"><![CDATA[gcc t.c -O3 -o t -std=c99]]></programlisting>
+	<para>
+	Ez nagyszerűen szemlélteti hogy a fordítás módja már önmaga is meghatározó tud lenni a törési idő csökkentésére/növelésére.
+	</para>
+    </section>        
+    <section>
+        <title>Neurális OR, AND és EXOR kapu</title>
+        <para>
+            R
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/Koyw6IH5ScQ">https://youtu.be/Koyw6IH5ScQ</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R</link>               
+        </para>
+        <para>
+            Ez a feladat az R programozáshoz kapcsolódik megint. Itt építünk fel egy tanulni képes neurális hálót, mely a neuronról kapta nevét, ami az agyunkban lévő sejt, ami az információ feldolgozásáért és kezeléséért felelős. Itt is ugyan ez lesz a helyzet, a feladatban a VAGY az ÉS és a kizáró vagy azaz EXOR-t fogjuk neki úgy mond megtanítani.
+        </para>
+	<para>
+	A VAGY művelet betanítása lesz az első, ahhoz hogy tudjunk dolgozni a neuralnet könyvtárra lesz szükségünk. A VAGY-nak a működését szemléltetjük az a1 a2 és az OR segítségével, ha az a1 és az a2 is 0 akkor az OR is 0 lesz, tehát ha mindakét operandus 0 akkor a VAGY logikai művelet is 0-át ad vissza, egyébként pedig 1-et fog vissza adni. Azaz ha legalább az egyik operandus 1 akkor az OR is 1 lesz. (Nyilván ez magába  foglalja azt is hogy mind az a1 mind az a2 1 akkor is 1 lesz az OR.)
+	</para>
+<programlisting language="c"><![CDATA[library(neuralnet)
+
+a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+
+or.data <- data.frame(a1, a2, OR)
+
+nn.or <- neuralnet(OR~a1+a2, or.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.or)
+
+compute(nn.or, or.data[,1:2])]]></programlisting>
+	<para>
+	Az ÉS művelet is hasonlóképpen betanítható és működtethető, annyi eltéréssel hogy itt akkor fog 1-et visszaadni a logikai művelet ha mind a két operandus 1, különben 0-val tér vissza. Tehát ha legalább az egyik operandus 0 akkor az ÉS is 0 lesz. (Ez pedig magába foglalja azt is ha mind az a1 mind az a2 0 akkor az ÉS is 0.)
+<programlisting language="c"><![CDATA[library(neuralnet)
+
+a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+AND   <- c(0,0,0,1)
+
+orand.data <- data.frame(a1, a2, OR, AND)
+
+nn.orand <- neuralnet(OR+AND~a1+a2, orand.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.orand)
+
+compute(nn.orand, orand.data[,1:2])]]></programlisting>
+	</para>
+	<para>
+	Az EXOR már kicsit másabb, eleinte mivel nem működött megfelelően fel is hagytak a neurális hálókkal, mert úgy voltak vele az emberek hogy ha egy ilyen egyszerű és sűrűn használt logikai műveletre nem lehet megtanítani akkor nem is annyira érdemes használni. Persze azóta megfejtették hogy mi is lehet a hiba, és most már képesek lehetünk neki megtanítani az EXOR azaz a kizáró vagy műveletet. Mindössze létre kell hozni rejtett neuronokat amelyek segítik a tanulásban.
+	</para>
+<programlisting language="c"><![CDATA[library(neuralnet)
+
+a1      <- c(0,1,0,1)
+a2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+
+exor.data <- data.frame(a1, a2, EXOR)
+
+nn.exor <- neuralnet(EXOR~a1+a2, exor.data, hidden=c(6, 4, 6), linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.exor)
+
+compute(nn.exor, exor.data[,1:2])
+]]></programlisting>
+	<para>
+	Az ábra igaz bonyolultabbá válik a rejtett neuronok miatt, viszont csak így érhetjük el a helyes eredményeket, te hát a megfelelő helyeken az 1-et és a 0-át, ha nem használnánk rejtett neuronokat és a VAGY vagy az ÉS logikai művelthez hasonlóan próbálnánk megoldani a tanítását, olyan 0,5 körüli értékeket kapnánk ami számunkra nem megfelelő. De nézzük meg a "hibás" forráskódot is:
+	</para>
+<programlisting language="c"><![CDATA[library(neuralnet)
+
+
+a1      <- c(0,1,0,1)
+a2      <- c(0,0,1,1)
+EXOR    <- c(0,1,1,0)
+
+exor.data <- data.frame(a1, a2, EXOR)
+
+nn.exor <- neuralnet(EXOR~a1+a2, exor.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.exor)
+
+compute(nn.exor, exor.data[,1:2])]]></programlisting>
+<para>Ez az ami nem működne megfelelően, de hála a rejtett neuronoknak mára már az EXOR művelet megtanítása se egy lehetetlen dolog. Az utolsó "hibás" kódot tehát el is felejthetjük.</para>
+    </section>        
+    <section>
+        <title>Hiba-visszaterjesztéses perceptron</title>
+        <para>
+            C++
+        </para>
+	<para>
+            Megoldás videó: <link xlink:href="https://youtu.be/XpBnR31BRJY">https://youtu.be/XpBnR31BRJY</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/nahshon/blob/master/ql.hpp#L64">https://github.com/nbatfai/nahshon/blob/master/ql.hpp#L64</link>               
+        </para>
+	<para>
+	A feladat értelmezésében és megoldásában tutoriáltam Nagy Krisztiánt!
+	</para>
+        <para>
+           A perceptron egy algoritmus ami a gépi tanulásban játszik fontos szerepet. A bináris osztályzók tanulásában is fontos szerepet játszanak, ugyanis ezek munkaköre az hogy eltudja dönteni/el is dönti, hogy az input specifikus osztályhoz tartozik-e vagy sem. A perceptronról bővebben angolul olvashatunk a <link xlink:href="https://en.wikipedia.org/wiki/Perceptron">Wikipédia oldalán.</link>
+        </para>
+	<para>
+	Továbbá még kiemelném a perceptron felépítését, mely 3 fő részből áll:
+	</para>
+	<itemizedlist>
+	<listitem>
+                <para>A retinának nevezett első elem, ami a bemeneti jeleket fogadó cellákat tartalmazza.</para>                        
+        </listitem>
+	<listitem>
+                <para>Az asszociatív cellák, melyek összegzik a hozzájuk érkező jeleket, impulzusokat.</para>                      
+        </listitem>
+	<listitem>
+                <para>A döntési cellák rétege a perceptronok kimenetele. Az asszociatív cellákhoz hasonló képpen működnek ezek is.</para>                        
+        </listitem>
+	</itemizedlist>
+	<para>
+	Részletesebben erről és egyéb perceptron információról olvashatunk magyar nyelven a  <link xlink:href="http://mialmanach.mit.bme.hu/eloadasanyagok/perceptron">következő oldalon.</link>
+	</para>
+	<para>A hibavisszaterjesztéses algoritmus az MLP architektúra alapján származtatható. Maga az algoritmus egy tanuló eljárás. Az MLP tanítása az algoritmussal egy szemléletes képen:</para>
+
+	<figure>
+	<title>MLP tanítása hibavisszaterjesztéses algoritmussal</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Caesar/perceptron.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>A képet a következő oldalról szúrtam be: <link xlink:href="http://mialmanach.mit.bme.hu/neuralis/ch04s02">http://mialmanach.mit.bme.hu/neuralis/ch04s02</link> </para>
+    </section>  
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

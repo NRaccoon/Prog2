@@ -1,0 +1,151 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Conway!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Hangyaszimulációk</title>
+        <para>
+            Írj Qt C++-ban egy hangyaszimulációs programot, a forrásaidról utólag reverse engineering jelleggel
+            készíts UML osztálydiagramot is!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/10/10/myrmecologist">https://bhaxor.blog.hu/2018/10/10/myrmecologist</link>
+        </para>
+        <para>
+            Megoldás forrása:
+	</para>
+<para><link xlink:href="./Conway/ant/ant.h">Hangya osztály</link></para> 
+<para><link xlink:href="./Conway/ant/antwin.h">AntWin osztály</link></para> 
+<para><link xlink:href="./Conway/ant/antwin.cpp">AntWin</link></para>
+<para><link xlink:href="./Conway/ant/antthread.h">Antthread osztály</link></para>
+<para><link xlink:href="./Conway/ant/antthread.cpp">Antthread</link></para>
+<para><link xlink:href="./Conway/ant/main.cpp">Main</link></para>
+        <para>
+            A hangya osztályban a hangyának a tulajdonságai vannak. A hangyának van oszlopa és sora ami a kódban x és y, valamint a kódban lévő dir ami a hangya irányát fogja képezni. Ezekből fogja tudni a program hogy hol van és merre tart a "hangyánk".
+        </para> 
+<programlisting language="c"><![CDATA[class Ant
+{
+
+public:
+    int x;
+    int y;
+    int dir;
+
+    Ant(int x, int y): x(x), y(y) {
+        
+        dir = qrand() % 8;
+        
+    }
+
+};]]></programlisting>
+	<para>
+	Nem pixelekkel dolgozik a program hanem cellákkal. Alapértelmezetten 6x6 pixeles egy cella.
+	</para>
+<programlisting language="c"><![CDATA[    cellWidth = 6;
+    cellHeight = 6;]]></programlisting>
+	<para>
+	Az AntWinbe van az AntThread osztályra mutató. A grind int*** a két rácsra mutat. Azért van két rácsunk hogy minden hangya egyszerre lépjen ehhez majd szükségünk lesz a gridldx-re. Valamint még a feromonnak a maximum és minimum értékét tartalamazza az AntWin. Az AntWinnek van konstruktor és destruktorja is, valamint van close evetnje ami a bezáráshoz kell, és keypresseventje ami a pauseolásra képes, ami a kódban P-re van bindelve.
+	</para>
+    </section>   
+     
+    <section>
+        <title>Java életjáték</title>
+        <para>
+            Írd meg Java-ban a John Horton Conway-féle életjátékot, 
+            valósítsa meg a sikló-kilövőt!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href=""></link>               
+        </para>
+        <para>
+           Ehhez a feladathoz is szükségünk lesz a jdk8-ra, de ezzel már rendelkezünk, korábbi fejezetben ennek beszerzése levan írva, ugyanis már kellett használnunk javás feladathoz.
+        </para> 
+       <para>Az életjáték elvet John Horton Conway nevéhez kötjük. Aki 1970-ben létrehozta saját sejtautomatáját, aminek megadhatunk bizonyos feltételeket az életbe maradáshoz. Így egy fajta életet hozzunk létre, amit megfigyelhetünk, ugyanis dimanikusan változik, kihalnak, születnek újak, vannak olyanok is amelyek stagnálnak. És a legritkább az amikor egyfajta ismétlődéses stagnálást eredményeznek a csoportulásuk ezeknek a kis "élőlényeknek".</para>
+	<para>Több szabályrendszer is létezik, a mi példákban Conway 3 szabályát feldolgozó automatát használjuk. Ennek szabályai a következők:</para> 
+	<para>1.szabály: Csak 2 vagy 3 szomszéddal rendelkező sejtek maradnak életben.</para>
+	<para>2.szabály: Ha egy szomszédnak 3+ szomszédja van túlnépesedés miatt kihal. Valamint ha 2-nél kevesebb akkor pedig szintén meghal, magányosság miatt.</para>
+	<para>3.szabály: Megszületik egy sejt ha üres a cella és 3 élő sejt szomszédja van a cellának.</para>   
+<para>Ezen szabályok mellett az egyik legjobb és legérdekesebb eset az úgynevezett "siklőkilövő" kódját linkelem ide, a feladathoz hűen java nyelven, majd a következő feladatban szintén ez megtalálható lesz c++ nyelven is. Valamint a következő feladatban a program futásakor készített kép is megtalálható lesz.</para>  
+<para>Forráskód: <link xlink:href="./Conway/siklo.java">
+<filename>Siklókilövő</filename>
+</link></para>
+    </section>  
+      
+    <section>
+        <title>Qt C++ életjáték</title>
+        <para>
+            Most Qt C++-ban!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="./Conway/sejtablak.cpp">Sejtablak</link>, <link xlink:href="./Conway/sejtablak.h">Sejtablak header</link>             
+        </para>
+	<para>A feladat ugyan az mint az előző csak c++-ban. Itt is szintén a Conway 3-as szabályrendszert fogjuk alkalmazni, ezáltal a szabályok ugyanazok, tehát a születés az életbenmaradás és a kihalás esete ugyan úgy fordul elő mint előbbiekben.</para>
+	<para>
+	Így például egy 2x2-es cella az élni fog és meg is marad nem fog változni se, míg egy 1x3-as cella pedig 3x1 lesz majd megint 1x3 és így tovább, viszont nem hal meg az egész alakzat. 
+        </para>
+	<para>Hogy is néz ki ez a cellákból álló ablak?</para>
+	<para>Valahogy így:</para>
+	<figure>
+	<title>Sejtablak</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Conway/sejtablak.jpg" format="JPG"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>A képet a következő oldalon fellelhetjük, valamint láthatunk még további állapotairól képeket a "siklókilövőnek". Az oldal: <link xlink:href="https://progpater.blog.hu/2011/03/03/fegyvert_a_nepnek">https://progpater.blog.hu/2011/03/03/fegyvert_a_nepnek</link></para> 
+	<para>
+	Maga a forrás pedig úgy működik hogy ilyen "siklókat" hozz létre amik folyamatosan haladnak és betöltik a rendelkezésre álló teret, ha ez a tér véges, akkor addig fognak haladni hogy a "szülők"-ig érnek azok pedig így meghalnak, de a siklók örökre megmaradnak és haladnak.
+	</para>        
+    </section>  
+      
+    <section>
+        <title>BrainB Benchmark</title>
+        <para>
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href=""></link>               
+        </para>
+        <para>
+           <link xlink:href="https://github.com/nbatfai/SamuBrain">https://github.com/nbatfai/SamuBrain</link>     
+        </para>
+	<para>
+	A játékos feladata az hogy a Samu Entrophy-n belül lévő kék körben kell a kurzort lenyomva tartani, ez eleinte nem bonyolult, de minél tovább tartjuk rajta annál jobban elkezdenek mozogni a pontok, így követni hol jár egyre nehezebbé válik. A konzolon kiírja ha hibázunk valamint folyamatosan méri hogy mennyi bit/sec a reakció időnk. Tehát érdekes egy program, főként az esportban jártasak számára. 
+	</para>
+	<para>A játék 10 percig fut, de lehetőségünk van előtte is kilépni, és ha hamarabb befejezzük akkor is láthatjuk az eredményeinket.</para>
+	<para>Fordítani és futtatni úgy tudjuk ha a szükséges fájlok mind egy mappába vannak és a szokásos qmake-s eljárást kell alkalmaznunk itt is. Valahogy így:</para>
+<programlisting language="c"><![CDATA[qmake BrainB.pro--
+make--
+./BrainB--]]></programlisting>	
+	<para>
+	Eleinte kevesebb "ablakkal" kezd, az idő múltával lesz egyre többb.
+	</para> 
+	<para>
+	Kezelő felületete így néz ki futás közben:
+	</para>
+	<figure>
+	<title>BrainB Benchmark</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Conway/BrainB.jpg" scale = "55"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	A kép egy régebbi verziót ábrázol de az újabb belinkelt forráskódú "játék"/"benchmark" is ugyanolyan felépítésű. A képet az interneten a következő oldalon lelhetjük fel: <link xlink:href="https://github.com/nbatfai/esport-talent-search">https://github.com/nbatfai/esport-talent-search</link>
+	</para> 
+    </section>        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

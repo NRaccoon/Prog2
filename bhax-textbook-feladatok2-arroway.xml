@@ -1,0 +1,313 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Arroway!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>OO szemlélet</title>
+	<para>
+	A módosított polártranszformációs normális generátor beprogramozása Java nyelven. Mutassunk rá,
+hogy a mi természetes saját megoldásunk (az algoritmus egyszerre két normálist állít elő, kell egy
+példánytag, amely a nem visszaadottat tárolja és egy logikai tag, hogy van-e tárolt vagy futtatni kell
+az algot.) és az OpenJDK, Oracle JDK-ban a Sun által adott OO szervezés ua.!
+
+Ugyanezt írjuk meg C++ nyelven is!
+	</para>
+        <para>
+            Megoldás forrásai:               
+        </para>
+	<para><link xlink:href="./Arroway/PolarGen.java"><filename>PolarGen.java</filename></link></para>
+	<para><link xlink:href="./Arroway/PolarGen.cpp"><filename>PolarGen.cpp</filename></link></para>
+        <para>
+            A feladatot én egy boolean típusú változó segítségével oldottam meg, ami tárolta számomra az az információt hogy van-e már kiszámolt véletlenszerű szám, tehát azzal kezdtem az egészet, hogy létre hoztam egy nincsTarolt változót melynek true-t adtam értékül. Valamint egy double változót is létre hoztam amely a legenerált számot fogja értékül kapni majd mindig.
+	</para>
+<programlisting language="java"><![CDATA[	boolean nincsTarolt = true;
+	double tarolt;]]></programlisting>
+	<para>
+A számok generálását pedig a példányon a "kovetkezo" metódus meghívásával érhetjük majd el, ami ha van már tárolt érték akkor azt visszaadja valamint a boolean változónkat true-ra állítja.
+	</para>
+<programlisting language="java"><![CDATA[	nincsTarolt = !nincsTarolt;
+	return tarolt;	]]></programlisting>
+	<para>
+	Ha pedig nincs még tárolt értékünk akkor a legenerált két értékből az egyik a "tarolt" változóba landol, ezáltal a "nincsTarolt" változó értékét falsera állítja, míg a másikat visszaadja (kiíratja). Maga a kiszámítási rész is itt található, tehát az a rész amin "spórolunk" ha csak a tárolt szám visszaadása elégséges.
+        </para>
+<programlisting language="java"><![CDATA[	double u1, u2, v1, v2, w;
+		do{
+		u1 = Math.random();
+		u2 = Math.random();
+		v1 = 2 * u1 - 1;
+		v2 = 2 * u2 -1;
+		w = v1 * v1 + v2 * v2;
+		}
+		while(w > 1);
+	double r = Math.sqrt((-2 * Math.log(w))/w);
+	tarolt = r * v2;
+	nincsTarolt = !nincsTarolt;
+	return r * v1;]]></programlisting>
+	<para>
+	Tehát összegezve egy lefuása alatt két random számot generál, amiből az egyiket eltárolja, így a következő meghívásnál "kíméljük a processzorunkat" ugyanis elég az előző eltárolt számot visszaadnia nem kell újat generálnia. A mi esetünkben így a 20 legenerált szám létrehozásához csak 10-szer kell lefutnia ténylegesen a számítási résznek.
+	</para>
+	<para>
+	Így néz ki tehát futtatásnál:
+	</para>
+	<figure>
+	<title>PolarGen.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/PolarGen.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	A feladat kéri ugyan ezt C++-ban is! A Java kód tulajdonában, talán már nem is lesz olyan nehéz a C++-os kód előállítása se, mindössze néhány dolgon kell módosítanunk.
+	</para>
+	<para>
+	Nyilvánvalóan a legszembe tűnőbb dolgok azok az includeok/importok és ehhez hasonlók, de valójában nem sok a tényleges különbség a C++ és a Javás verzió között. Talán kiemelendő hogy a C++-nál létre kell hoznunk egy destruktort mert itt nem található meg az automatikus takarítás mint a javánál. De maga a felépítés és a számítások hasonlóak, törekedtem az elnevezésekkel és a tagolással is úgy játszani hogy lássuk azt hogy szinte ugyan az a kód. A kódokat feljebb a "Megoldás forrásai" résznél linkeltem!
+	</para>
+	<para>
+	Így néz ki hát a C++-os PolarGen fordítása és futtatása:
+	</para>
+	<figure>
+	<title>PolarGen.cpp futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/PolarGen2.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+    </section>        
+
+    <section>
+        <title>Homokozó</title>
+	<para>
+	Írjuk át az LZW binfát C++ nyelvről Java nyelvre, ugyanúgy működjön!
+Mutassunk rá, hogy gyakorlatilag a pointereket és referenciákat kell kiirtani és minden máris működiks
+(erre utal a feladat neve, hogy Java-ban minden referencia, nincs választás, hogy mondjuk egy
+attribútum pointer, referencia vagy tagként tartalmazott legyen).
+Miután már áttettük Java nyelvre, tegyük be egy Java Servletbe és a böngészőből GET-es kéréssel
+(például a böngésző címsorából) kapja meg azt a mintát, amelynek kiszámolja az LZW binfáját!
+	</para>
+        <para>
+         <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
+        </para>
+    </section>        
+        
+    <section>
+        <title>"Gagyi"</title>
+	<para>
+	Az ismert formális
+<programlisting language="c"><![CDATA[while (x <= t && x >= t && t != x);]]></programlisting>
+	</para>
+	<para>
+tesztkérdéstípusra adj a szokásosnál
+(miszerint x, t az egyik esetben az objektum által hordozott érték, a másikban meg az objektum
+referenciája) „mélyebb” választ, írj Java példaprogramot mely egyszer végtelen ciklus, más x, t
+értékekkel meg nem! A példát építsd a JDK Integer.java forrására, hogy a 128-nál inkluzív objektum
+példányokat poolozza!
+	</para>
+        <para>
+            Megoldás forrásai:   
+        </para>
+         	<para><link xlink:href="./Arroway/Gagyi.java"><filename>Gagyi.java</filename></link></para>
+		<para><link xlink:href="./Arroway/Gagyi2.java"><filename>Gagyi2.java</filename></link></para>
+        <para>
+           Én ezt a feladatot az Integer osztályra építettem, annak segítségével szemléltetem a feladat megoldását. Tehát importálnom kellet a következőképpen:
+        </para>
+<programlisting language="java"><![CDATA[import java.lang.Number;]]></programlisting>
+	<para>De nézzük a fentebb belinkelt Gagyi.java nevű kódunkat futás közbe!</para>
+	<figure>
+	<title>Gagyi.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/Gagyi.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	A kód nem meglepő módon végtelen ciklust hozott létre, ugyanis a while minden egyes eleme igazzal tér vissza, tehát:
+	</para>
+<programlisting language="java"><![CDATA[x<=t == true
+x>=t == true
+mivel 321 == 321]]></programlisting>
+	<para>
+	Viszont az is igaz lesz hogy t != x, értékük ugyanis megegyezik, viszont az osztályból két példányt példányosítottunk, tehát nem lehetnek egyenlőek, hisz azonos időben a memória különböző területén helyezkednek el nem pedig ugyan ott.
+	</para>
+	<para>
+	De képesek vagyunk a végtelen ciklus elkerülésére, mindössze az integerek értékének megváltoztatásával. Erre példát láthatunk a Gagyi2.java fájlban. Ami a következő képpen fest:
+	</para>
+<programlisting language="java"><![CDATA[import java.lang.Number;
+
+class Gagyi2{
+	
+	public static void main(String[]args){
+		
+	Integer t = 123;
+	Integer x = 123;
+	
+	while(x<=t && x>=t && t!=x){
+	System.out.println("Gagyi");}	
+	}
+}]]></programlisting>
+	<para>Futás közben pedig nem annyira látványos, de így néz ki:</para>
+	<figure>
+	<title>Gagyi2.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/Gagyi2.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	De miért van ez?
+	</para>
+	<para>
+	A válasz egyszerű, a fent említett osztály gyorsítótárazási tulajdonságát kihasználva van lehetőségünk erre, ugyanis az integer [-128, 127] intervallumban már egy meglévő objektumról kapunk egy referenciát, ez pont a gyorsítótárazás miatt van, valószínűleg úgy gondolták ebben a tartományban használjuk leginkább a számokat és egy fajta könnyítés képp van ez így. Viszont ez épp elég ahoz hogy a t != x feltétel hamis értékkel térjen vissza, ezáltal a while feltétele is hamisra módusoljon, mivel ha már az egyik nem igaz akkor az egész hamis lesz.
+	</para>
+    </section>  
+
+    <section>
+        <title>Yoda</title>
+	<para>
+	Írjunk olyan Java programot, ami java.lang.NullPointerEx-el leáll, ha nem követjük a Yoda
+conditions-t! Yoda-conditionról bővebben: <link xlink:href="https://en.wikipedia.org/wiki/Yoda_conditions">https://en.wikipedia.org/wiki/Yoda_conditions</link>!
+	</para>
+        <para>
+            Megoldás forrásai:
+	</para>
+         	<para><link xlink:href="./Arroway/Yoda.java"><filename>Yoda.java</filename></link></para>
+		<para><link xlink:href="./Arroway/Yoda2.java"><filename>Yoda2.java</filename></link></para>
+        <para>
+            A feladat az volt hogy olyan programot írjunk amely leáll, ha nem követjük a Yoda conditionst, azaz java.lang.NullPointer.Exceptionnal kilök. Én egy egyszerű, de talán szemléletes példát hoztam ennek bemutatására. Valamint a kódot "átírtam" a Yoda conditions követése szerint is, így láthatjuk mi a különbség.
+        </para>
+	<para>
+	A fent megjelölt megoldás forrás első forrása (Yoda.java), az a feladat által igényelt fájl, ennek futása NullPointerExceptionnel lefog állni, ugyanis a string amihez hasonlítanánk a másik stringünket egy null pointer valójában, így maga az összehasonlítás nem lesz lehetséges, ugyanis null objektum metódusát akarnánk meghívni.
+	</para>
+	<figure>
+	<title>Yoda.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/Yoda.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	A fent belinkelt 2. forrás pedig ugyan ez, csak annyi különbséggel, hogy ez esetben követtem a Yoda conditionst, így lefut gond nélkül a program és egyszerűen a várt "false" értéket fogja vissza adni. Ez azért lehetséges mert ez esetben a meglévő "Yoda" stringhez akarjuk hasonlítani a "null pointer" stringünket, ami egyértelműen nem egyenlő ugyan de az összehasonlítás önmaga lehetséges ellentétbe a másik kóddal.
+	</para>
+	<figure>
+	<title>Yoda2.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/Yoda2.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+    </section>  
+
+    <section>
+        <title>Kódolás from scratch</title>
+	<para>
+        Induljunk ki ebből a tudományos közleményből: <link xlink:href="http://crd-legacy.lbl.gov/~dhbailey/dhbpapers/bbp-
+alg.pdf">http://crd-legacy.lbl.gov/~dhbailey/dhbpapers/bbp-
+alg.pdf</link> és csak ezt tanulmányozva írjuk meg Java nyelven a BBP algoritmus megvalósítását!
+	</para>	
+	<para>
+            Megoldás forrása:                
+        </para>
+        <para>
+            A BBP (Bailey-Borwein-Plouf) algoritmus a BBP formulát hazsnálja alapul amit 1995-ben talált fel Simon Plouffe. Az algoritmus alkalmas a Pi hexa számjegyeinek meghatározására.
+        </para>
+	<para>
+	Erről lenne szó:
+	</para>
+	<figure>
+	<title>BBP formula</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/BBP.png" scale = "80"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Valamint a kód maga itt látható:
+	</para>
+<programlisting language="java"><![CDATA[public PiBBP (int d){
+
+double d16Pi = 0.0d;
+
+double d16S1t = d16Sj(d,1);
+double d16S4t = d16Sj(d,4);
+double d16S5t = d16Sj(d,5);
+double d16S6t = d16Sj(d,6);
+
+d16Pi = 4.0d*d16S1t - 2.0d*d16S4t - d16S5t - d16S6t;
+d16Pi = d16Pi - StrictMath.floor(d16Pi);
+
+StringBuffer sb = new String Buffer();
+Character hexaJegyek[] = {'A', 'B', 'C', 'D', 'E', 'F'};
+
+while(d16Pi != 0.0d){
+	int jegy = (int)StrictMath.floor(16.0d*d16Pi);
+	if (jegy < 10)
+	sb.append(jegy);
+	
+	else
+	sb.append(hexaJegyek[jegy-10]);
+	
+d16Pi = (16.0d*d16Pi) - StrictMath.floor(16.0d*d16Pi);
+}
+d16PiHexaJegyek() = sb.toString();
+}]]></programlisting>
+
+<para>Az algoritmus által használt objektumot hozzuk létre, valamint "kiszámoljuk" a későbbiekben szükséges értékeket.</para>
+
+<programlisting language="java"><![CDATA[public double d16Sj (int d, int j){
+
+double d16Sj = 0.0d;
+
+for(int k=0; k<=d; ++k)
+	d16Sj += (double)n16modk(d-k, 8*k + j)/(double)(8*k + j);
+return d16Sj - StrictMath.floor(d16Sj);
+
+public long n16modk(int n, int k){
+ int t = 1;
+while(t <= n)
+t *= 2;
+
+long r = 1;
+
+	while(true){
+		if(n >= t){
+		r = (16*r) % k;
+		n = n - t;
+		}
+	t = t/2;
+
+	if(t < 1)
+	break;
+
+	r = (r*r) % k;
+	}
+return r;
+}
+public String toString(){
+return d16PiHexaJegyek;
+}
+public static void main(String args[]){
+	System.out.print(new PiBBP(1000000));
+}
+}]]></programlisting>
+	<para>A program a futása végén kiírja számunkra a hexa jegyeket. Tehát így néz ki futtatás után:</para>
+	<figure>
+	<title>PiBBP.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Arroway/PiBBP.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+    </section>  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

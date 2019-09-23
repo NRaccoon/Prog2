@@ -1,0 +1,99 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Berners-Lee!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>Összehasonlító jellegű olvasónapló</title>
+        <para>
+            <emphasis role='strong'>C++: Benedek Zoltán, Levendovszky Tihamér Szoftverfejlesztés C++ nyelven
+Java: Nyékyné Dr. Gaizler Judit et al. Java 2 útikalauz programozóknak 5.0 I-II.
+o Ebből a két könyvből pár oldalas esszé jellegű kidolgozást kérek, Java és C++
+összehasonlítás mentén, pl. kb.: kifejezés fogalom ua., Javában minden objektum
+referencia, mindig dinamikus a kötés, minden függvény virtuális, klónozás stb.</emphasis>
+        </para>
+	<para>
+	<emphasis role='strong'>Összehasonlító jellegű olvasónapló:</emphasis>
+	</para>
+	<para>
+	Mindkét könyv (én esetemben 3 példány) nagyon részletesen és szemléletesen mutatja be a C++ valamint a Java programozási nyelvet. Bár itt ott már-már elavultnak mondható egy két rész, ugyanis folyamatosan változik ez a szakág, de ennek ellenére egy nagyon jó alapot tud adni a nylevekből, amire az ember már könnyedén építhet saját maga. Nem kell tehát meglepődni ha valamilyen oknál fogva a könyvben egy két kódcsípet már nem fordul le vagy éppen hibát lök vissza, én magam is jártam így olvasás/próbálgatás közben.
+	</para>
+	<para>
+A C++ egy általános célú programozási nyelv, amely lehetővé teszi az objektumorientált és a generikus programozást is, de alacsonyabb szintű nyelvi konstrukciókat is támogat. Míg a Java egy teljesen objektumorientált eszközkészletből építkező programozási nyelv.
+	</para>
+	<para>
+A Java jelölésrendszerében sok mindent átvett a C++-tól de sok figyelemt fordítottak mellette a megbízhatóságra, valamint a biztonságosságra, ezért a két nyelv között vannak kisebb-nagyobb eltérések, melyekre a következő sorokban/oldalakban jobban kitérnék. Ez az olvasónapló ugyanis a feladat leírása alapján is jól látszódik, hogy a két nyelvnek az összehasoníltásáról fog szólni. Főként különbségeik mentén, de nyilván hasonlóságaikról is szót ejtve.
+	</para>
+	<para>
+A Java fordítóprogram egy bájtkódnak nevezett formátumra fordítja le a forráskódot amit majd a Java Virtuális Gép interperterként fog értelmezni, ennek meg van az előnye és a hátránya is, előnye például biztonsági szempontokból mutatkozik leginkább, hátrányaként pedig abszolút kiemelendő a sebesség. Míg a C++ natív kód fordul, ezáltal sokkal gyorsabb, játékoknál is fontos például a gyorsaság így ezért is inkább c++-ban írnak játékfejlesztésnél(pc-re). De ugyanakkor a Java kódok így "hordozhatóak" ugyanis a bájtkód osztályok átvihetőek platformspecifikus JVM-ekre, ellentétben a C++-al. A C++ kódok platformfüggőek míg a Java programok platformfüggetlenek, a JVM-nek köszönhetően újrafordítás nélkül is futni fognak.
+	</para>
+	<para>
+A Java forráskódokat olvasgatva nyilvánvalóvá váli kaz hogy a szintaxisa a C illetve a C++ nyelvből fejlődött ki. Ugyanakkor néha alapvető pontokban is eltér tőlük. Például a metódusok visszatérési típusának megadása a Javában kötelező minden metódus estetén, míg a C++-ban ugyanez nem mondható el, ugyanis van ott egy alapértelmezett "int" visszatérési típus, így nem kötelező minden esetben a típus megadása.
+	</para>
+	<para>
+A Java 2 Utikalóz könyv első kötetében fel is hívja a figyelmet arra, hogy a "gyakorlottabb" C++ programozók számára az első meglepetés jelentheti a main metódus argumentuma, hiszen a C++-al ellentétben itt egy igazi szövegtömbön "(String[])"-en keresztül kerülnek átadásra a paraméterek. Jómagam is előbb a C++ nyelvvel ismerkedtem meg, így számomra is a Javával való első találkozásnál feltűnt ez. Valamint ami még egy sima "Hello, World!" megírása, fordítása, s futtatása során is megfigyelhetünk, az nem más mint a Java név és forrás közötti kapcsolata. Ugyanis C++-ban nincs szigorú kapcsolat az osztálynevek és a fájlnevek között, viszont ugyan ez nem mondható el a Javánál ahol például egy HelloVilag osztály forráskódjának a HelloVilag.java nevet kell viselnie, ahoz hogy sikeresen fordítani és futtatni tudjuk a kódunkat.
+	</para>
+	<para>
+Továbbá szembetűnő az I/O statements használata közötti különbségek is, C++ ugye a <programlisting language="c"><![CDATA[cin>>]]></programlisting> és <programlisting language="c"><![CDATA[cout<<]]></programlisting> kifejezések és jelek használatával könnyedén bekérhetünk vagy épp kiolvashatunk a standard outputról/-ra. A Java esetében azért ez picit komplexebb, ugyanis a beolvasás biteonként történik <programlisting language="java"><![CDATA[(System.in)]]></programlisting> a kiíratás ugyanakkor nem okozz nehézségeket egy egyszerű <programlisting language="java"><![CDATA[System.out.println(x);]]></programlisting> paranccsal történik.
+	</para>
+	<para>
+Kommentelés terén a két nyelv ugyanazokat a jeleket ugyanúgy használja, egy különbséggel hogy míg C++-ban nem lehet dokomentációs megjegyzéseket létrehozni, addig Javában használható az. A következő jelöléssel: /** */. Hasonló a több soros megjegyzéshez (/* */) annyi különbséggel, hogy ungyan a fordítóprogram figyelmen kívül hagyja, viszont azok a program dokumentációjába belekerülnek.
+	</para>
+	<para>
+További különbség például a memória kezelése a két programozási nyelvnek, ugyanis a javában automatikus takarítás van amit egy őgynevezett szemétgyűjtő eljárás végez. Ennek a működése teljes egészében a futtató rendszer feladata, tehát a felhasználónak/fejlesztőnek nem kell törődnia a tárterület felszabadításával. A rendszer felismeri ha már kezd a memória betelni és akkor elindítja ezt az eljárást, vagy éppen akkor ha semmi se fut. Ezzel ellentétben a C++-ban nincs ilyen, ott a memória felszabadítását a programozó végzi, destruktorokkal kell dolgoznia, és "manuálisan" törölni a nem használt hivatkozásokat. Ez mindkét oldalról lehet előny és hátrány is, például a c++ féle módszer előnyösebb lehet az esetben ha kisebb limitált memóriával rendelkező eszközökre akarunk valami nagyobb teljesítményű programot, akár egy játékot írni, a java féle módszer nagyon fogyasztja a memóriát ami nem kifizetődő, de alap esetben nyilván kényelmesebb és jobb egy automatikus takarítás.
+	</para>
+	<para>
+Továbbá a C++ lehetőséget nyújt a többszöri öröklődésre ellentétben a Javával ahol ez nem megtalálható. Valmaint a kivételkezelésük is különbözik, míg a c++ a try/catch funkciókkal dobja és kapja el a kivételeket. Addig a Javának különböző kivételkezelése van ugyanis nincs destructor se a nyelvben, valamint a Javában meg kell határozni a try/catch-et ha a funkció deklarálja hogy esély van arra hogy kivételt dob.
+	</para>
+	<para>
+A Javában grafikai elemeket létrehozni és használni az AWT(Abstract Window Toolkit) segítségével tudunk. Vagy léztezik egy kicsit fejletebb, látványosabb elemeket alkotó Swing nevezetű könyvtár. C++-ban pedig a QT tud segítségünkre válni ha grafikai megjelenítésről van szó. Bár nekem a grafikai része a programozásnak nem túl gyakran használt, de azért mindenképp említésre méltó rész ez is.
+	</para>
+	<para>
+Javában minden objektum referencia...később kifejtem
+	</para>
+	<para>
+Operátor túlterhelés C++-ban van Javában nincs...később kifejtem
+	</para>
+	<para>
+Összefoglalás....később kifejtem
+	</para>
+	</section>
+	<section>
+        <title>Élmény-olvasónapló</title>
+	<para>
+	<emphasis role='strong'>Python: Forstner Bertalan, Ekler Péter, Kelényi Imre: Bevezetés a mobilprogramozásba.
+Gyors prototípus-fejlesztés Python és Java nyelven (35-51 oldal)
+Itt a kijelölt oldalakból egy 1 oldalas élmény-olvasónaplóra gondoltam.</emphasis>
+	</para>
+	<para>
+	<emphasis role='strong'>Élmény-olvasónapló:</emphasis>
+	</para>
+	<para>
+	Számomra a Python egy kissé ismeretlen programozási nyelv, ugyanis még nem sokat használtam, mivel az egyetemi éveim során kezdtem bele a programozás tanulásába, és az ott használt nyelveket (C++, Java) részesítettem előnybe főként. Tehát számomra ez a pár oldal nem csak hasznos információk szerzésére volt alkalmas, de motiválóan is hatott, kedvet teremtett a Python nyelv megismerésére/elsajátítására.
+	</para>
+	<para>
+A Python egy általános célú programozási nyelv, melyet 1990-ben Guido van Rossum alkotott meg. Ez a magas szintű programozási nyelv, rengeteg pozitívummal rendelkezik, ugyanis objektumorientált, platformfüggetlen, egyszerű a használata, nincs szükség fordításra és linkelésre, az interpreter interaktívan is használható és még sok más jó tulajdonsággal rendelkezik. Nem véltelen tehát az, hogy 2019-ben a legjobb programozási nyelvek ranglistán az első helyet tudhatja magáénak a Python, ugyanis minden területen jól használható, és a fejlesztők örömmel használják.
+	</para>
+	<para>
+A 3.1 ás a 3.2 a fent említett hasznos és fontos tulajdonságai részletezi, és ad alap információt a Python nyelvről. A 3.3 az első "érdekesebb" bekezdés, ugyanis itt egyből kiemeli az egyik hasznos jellemzőjét a Pythonnak, azaz a behúzásalapú szintaxisát, amely eltér a megszokott C++/Java szintaxistól. Ugyanis itt nincs szükség zárójelezésre vagy explicit kulcsszavakra (pl. begin, end), hanem a tab és szóköz kezeli az elválasztásokat. Az utasítások pedig a sor végéig tartanak alap esetben tehát a ";" se kell, persze a megfelelő "\" jelzéssel írhatunk egy utasítást több soron keresztül, ha egyben nem férne el az.
+Ezek után megismerhetjük a lefgolalt kulcsszavakat, majd a típusokat taglalja a könyv, ahol újabb pozitív jellemzőre hívja fel az olvasó figyelmét, mi szerint nem kell minden változó típusát explicit megadni, ez szintén a kód tömörségét segíti elő, tehát egy bonyolultabb kódot is könnyen olvashatunk úgy hogy lényegesen kevesebb sorban van megírva mint egy C++-os vagy Java-s társa.
+	</para>
+	<para>
+Majd szó eset a különféle függvényekről, ciklusokról, metódusokról, funkciókról, azoknak a megfelelő használatáról, nyilván eltérés itt is akadt bőven egy C++-hoz képest például, de szerintem egy C++/Java ismeretében és a Python szintaxis tudtábban ezek könnyen elsajátíthatóak, és nem okoznak nagy meglepetéseket az olvasó számára. Később pedig az osztályokról és objektumról írt a könyv, de kiemleték azt is hogy "...e könyvnek azonban nem célja a nyelvről teljes referenciát biztosítani, így az érdeklődő Olvasót további kézikönyvek áttanulmányozására biztatjuk.", de az alap osztályok létrehozását használatát, konstruktorok bemutatását nagyszerűen leírta, mindössze a mélyebb részekbe nem ment bele.
+	</para>
+	<para>
+Modulokról eset szó a 3.3.6-ban, ami főként a mobilkészülékekkel való fejlesztés megkönnyítéséért felelősek, rengeteg hasznos modult tartalmaz melyek közül van olyan például amely a készülékek kamerájával kapcsolatos műveleteket tudja elkészíteni/lekérdezni, vagy példáu la hangfelvételek készítéséért vagy lejátszásáért felelősek.
+A 3.3.7 a kivételkezelést szemlélteti röviden, a try kulcsszóval.
+	</para>
+	<para>
+A 3.4 pedig már példákon keresztül taglalja a különböző témákat. Ami szerintem nagyon jó ötlet, ugyanis én önamgamon is észrevettem már hogy sokat segít ha láthatom is az "elmélet" mögötti gyakorlati példákat. A könyv már a különböző témák bemutatásakor is használt kódcsípeteket a szemléltetésre, de ezután még külön gyakorlati példákon keresztül is szemléltette a "nehezebbnek vélt" témaköröket. Persze programozni amúgy se könyvből lehet megtanulni, ergo az olvasottakat gyakorlatban is érdemes kipróbálni saját kézzel írt kódokkal ha lehet. Ugyanis így könnyebben megjegyezzük és megtanuljuk a különböző nyelveket, vagy akár azokon belül a metódusokat, függvényeket, ciklusokat.
+	</para>
+	<para>
+Összeségében, szerintem egy nagyon jó alapot nyújtó pár oldal volt ez a könyvből, szemléletes leírás menettel és példákkal. Én személy szerint ajánlanám mindenkinek aki Python tanulásba bele akar kezdeni, és még azoknak is talán akik nem, ugyanis elképzelhető hogy ez a pár oldal meghozza hozzá a kedvet.
+	</para>    
+	</section>        
+
+</chapter>

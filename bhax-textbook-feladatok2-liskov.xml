@@ -1,0 +1,71 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Liskov!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>Liskov helyettesítés sértése</title>
+	<para>
+	Írjunk olyan OO, leforduló Java és C++ kódcsipetet, amely megsérti a Liskov elvet! Mutassunk rá a
+megoldásra: jobb OO tervezés.
+<link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf</link> (93-99 fólia)
+(számos példa szerepel az elv megsértésére az UDPROG repóban, lásd pl. source/binom/Batfai-
+Barki/madarak/)
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>   
+
+    <section>
+        <title>Szülő-gyerek</title>
+	<para>
+	Írjunk Szülő-gyerek Java és C++ osztálydefiníciót, amelyben demonstrálni tudjuk, hogy az ősön
+keresztül csak az ős üzenetei küldhetőek!
+<link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf</link> (98. fólia)
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>  
+
+    <section>
+        <title>Anti OO</title>
+	<para>
+	A BBP algoritmussal 4 a Pi hexadecimális kifejtésének a 0. pozíciótól számított 10, 107, 108 darab
+jegyét határozzuk meg C, C++, Java és C# nyelveken és vessük össze a futási időket!
+<link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066</link>
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section> 
+
+    <section>
+        <title>Hello, Android!</title>
+	<para>
+	Élesszük fel az SMNIST for Humans projektet!
+<link xlink:href="https://gitlab.com/nbatfai/smnist/tree/master/forHumans/SMNISTforHumansExp3/app/src/main">https://gitlab.com/nbatfai/smnist/tree/master/forHumans/SMNISTforHumansExp3/app/src/main</link>
+Apró módosításokat eszközölj benne, pl. színvilág.
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section> 
+
+    <section>
+        <title>Ciklomatikus komplexitás</title>
+	<para>
+	Számoljuk ki valamelyik programunk függvényeinek ciklomatikus komplexitását! Lásd a fogalom
+tekintetében a <link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_2.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_2.pdf</link> (77-79
+fóliát)!
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>     
+
+</chapter>

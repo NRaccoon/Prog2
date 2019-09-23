@@ -1,0 +1,450 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Turing!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Végtelen ciklus</title>
+        <para>
+            Írj olyan C végtelen ciklusokat, amelyek 0 illetve 100 százalékban dolgoztatnak egy magot és egy olyat, amely  
+            100 százalékban minden magot!
+        </para>
+        <para>
+            Megoldás forrása:
+	</para>
+	<para>
+100% 1 mag: 
+<link xlink:href="./Turing/ciklus1.c">
+<filename>Ciklus1</filename>
+</link>                
+        </para>
+	<para>
+0% minden mag: 
+<link xlink:href="./Turing/ciklus2.c">
+<filename>Ciklus2</filename>
+</link>                
+        </para>
+	<para>
+100% minden mag: 
+<link xlink:href="./Turing/ciklus3.c">
+<filename>Ciklus3</filename>
+</link>                
+        </para>
+        <para>
+            Ez a feladat 3 részre bontható. Az egyikben 100%-on kell dolgoztatni egy magot, a másikban 0%-on minden magot, az utolsóban pedig 100%-on minden magot.
+        </para>
+        <para>
+	Az első rész, egy egyszerű végtelen ciklus megírásával, már készenek is mondható. A <emphasis>Megoldás forrásban</emphasis> látható, hogy én a <type>while</type> használatával készítettem el a végtelen ciklusom. Persze, ezt másképp is meg lehet oldani például egy: "for(;;)" ciklus használatával, ami még talán jobb is lehet, bizonyos szempontokból, de a feladat megoldásához tökéletesen megfelel az én első gondolatom is ami egy egyszerű mindig igaz while ciklusra épül. Ugyanis ez tökéletesen 100%-on használ ki egy magot futásakor.
+	</para>
+<programlisting language="c"><![CDATA[while(0<1){}]]></programlisting> 
+	<para>
+		Mivel ez mindig igaz lesz ezért a végtelenségig fut a program, és egy magot teljesen lefog.
+	</para> 
+	<para>
+	A második rész már bonyolultabb egy kicsit, mivel itt a while cikluson belül használnunk kell egy <type>sleep()</type> kifejezést.(A mellékelt módhoz hasonlóan!)
+	</para>
+<programlisting language="c"><![CDATA[while(0<1){
+sleep(1);}]]></programlisting>   
+	<para>  
+	Valamint a forrás elején includeolnunk kell az unistd.h header fájlt.
+	</para>
+<programlisting language="c"><![CDATA[#include <unistd.h>]]></programlisting>   
+	 <para>
+	Ezen kívül viszont már nincs más dolgunk csak fordítani és futtatni, az eredmény a várt lett, 0% terhelést neheztel a magokra a program.
+	</para>
+	<para>
+	A feladat utolsó része tűnhet már első ránézésre is a legnehezebbnek, és ez nincs is máshogy.
+	</para>
+	<para>
+	Én ennek a feladatnak a megoldására az OpenMp-t használtam, mely minden magra kiterjeszti a terhelést, ezáltal elérhetjük hogy a program futásakor minden magot 100%-on pörgessen.
+	</para>
+	<para>
+	Az OpenMp használatához includeolnunk kell az omp.h könyvtárat!
+	</para>
+<programlisting language="c"><![CDATA[#include <omp.h>]]></programlisting> 
+	<para>
+	Valamint a végtelen ciklusunk elé kell írnunk a #pragma omp parallel kifejezést!
+ 	</para>
+<programlisting language="c"><![CDATA[#pragma omp parallel
+while(0<1){}]]></programlisting> 
+	<para>
+	A kódunk fordításához a következő parancssort kell begépelnünk a terminálba:
+	</para>
+	<para>
+	gcc -fopenmp (fájlnév pl:) 3.c -o (fordítás utáni fájlnév pl:) 3
+	</para>
+	<para>
+	Ezután futtatjuk a programot és láthatóvá válik hogy minden magot (én esetemben 4 magot) 100%-on pörget.
+	</para>
+
+    </section>
+        
+    <section>
+        <title>Lefagyott, nem fagyott, akkor most mi van?</title>
+        <para>
+            Mutasd meg, hogy nem lehet olyan programot írni, amely bármely más programról eldönti, hogy le fog-e fagyni vagy sem!
+        </para>
+        <para>
+            Megoldás videó:
+        </para>
+        <para>
+            Megoldás forrása:  tegyük fel, hogy akkora haxorok vagyunk, hogy meg tudjuk írni a <function>Lefagy</function>
+            függvényt, amely tetszőleges programról el tudja dönteni, hogy van-e benne végtelen ciklus:              
+        </para>
+        <programlisting language="c"><![CDATA[Program T100
+{
+
+	boolean Lefagy(Program P)
+	{
+		 if(P-ben van végtelen ciklus)
+			return true;
+		 else
+			return false; 
+	}
+
+	main(Input Q)
+	{
+		Lefagy(Q)
+	}
+}]]></programlisting>            
+        <para>
+            A program futtatása, például akár az előző <filename>v.c</filename> ilyen pszeudókódjára:
+            <screen><![CDATA[T100(t.c.pseudo)
+true]]></screen>            
+            akár önmagára
+            <screen><![CDATA[T100(T100)
+false]]></screen>  
+            ezt a kimenetet adja.          
+        </para>
+        <para>
+            A T100-as programot felhasználva készítsük most el az alábbi T1000-set, amelyben a
+            Lefagy-ra épőlő Lefagy2 már nem tartalmaz feltételezett, csak csak konkrét kódot:
+        </para>
+        <programlisting language="c"><![CDATA[Program T1000
+{
+
+	boolean Lefagy(Program P)
+	{
+		 if(P-ben van végtelen ciklus)
+			return true;
+		 else
+			return false; 
+	}
+
+	boolean Lefagy2(Program P)
+	{
+		 if(Lefagy(P))
+			return true;
+		 else
+			for(;;); 
+	}
+
+	main(Input Q)
+	{
+		Lefagy2(Q)
+	}
+
+}]]></programlisting>            
+        <programlisting><![CDATA[]]></programlisting>            
+        <para>
+            Mit for kiírni erre a <computeroutput>T1000(T1000)</computeroutput> futtatásra?
+                                
+            <itemizedlist>
+                <listitem>
+                    <para>Ha T1000 lefagyó, akkor nem fog lefagyni, kiírja, hogy true</para>                        
+                </listitem>
+                <listitem>
+                    <para>Ha T1000 nem fagyó, akkor pedig le fog fagyni...</para>                        
+                </listitem>
+            </itemizedlist>
+            akkor most hogy fog működni? Sehogy, mert ilyen <function>Lefagy</function>
+            függvényt, azaz a T100 program nem is létezik.                
+        </para>
+ 	<para>
+	Tapasztalatok és megfigyelések: Ilyen programot nem lehet írni, ugyanis ellentmondásra jutunk. Egy program nem fogja tudni megmondani hogy a neki paraméteréül adott program végtelenségig fog-e futni vagy lesz olyan pont ahol megáll.
+        </para>
+	<para>
+	Legjobban talán az tudná szemléltetni ha paraméterként saját magát kapná meg a program.
+	</para>
+	<para>
+	Mi történne ilyenkor?
+	</para>
+	<para>
+	Ha megállna a program csak akkor tudná visszaadni az értéket, hogy a végtelenségig fut, de akkor ez nem lenne a valóságnak megfelelő adat, hiszen nem lenne igaz, mivel megállt. A másik eset az lenne, ha nem állna meg a program futása, de ez esetben pedig nem tudná megadni azt hogy Ő a végtelenségig fut, hiszen nem állt még meg. Ezáltal egy fajta paradoxonra jutunk, és el kell ismernünk, hogy nem létezik erre a problémára megoldás.
+	</para>
+	<para>
+	Eleinte talán nehezen érthető még magyarázzattal is, de többszöri átolvasás után véleményem szerint mindenkinek ez a példa triviális lesz. Bátfai Tanár úr kódját nézzük a magyarázat mellé a könnyebb megértés végett!
+	</para>
+    </section>        
+                
+    <section>
+        <title>Változók értékének felcserélése</title>
+        <para>
+            Írj olyan C programot, amely felcseréli két változó értékét, bármiféle logikai utasítás vagy kifejezés
+            nasználata nélkül!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/08/28/10_begin_goto_20_avagy_elindulunk">https://bhaxor.blog.hu/2018/08/28/10_begin_goto_20_avagy_elindulunk</link>
+        </para>
+        <para>
+            Megoldás forrása:  
+        </para>
+	<para>
+Változók cseréje kivonás  és összeadás műveletek segítségével:
+<link xlink:href="./Turing/csere.c">
+<filename>Csere</filename>
+</link>
+	</para>
+        <para>
+            Két változó értékének a felcserélésére több lehetséges opciónk is van, az egyik legegyszerűbb megoldás erre egy új változó (ún. segéd változó) létrehozása lenne, Aminek értékül adnánk az egyik felcserélendő változót, aztán a két változó értékét egyenlővé tennénk, majd a segéd változóból átraknánk az értéket a másik felcserélendő változóba.
+        </para>
+	<para>
+	Viszont segéd változó bevezetése nélkül is megoldható, például kivonás és összeadás művelet segítségével.
+	</para>
+	<para>
+	Három lépésből megoldható a változók értékeinek cserélése a kivonás és az összeadás művelet segítségével is. Első lépésben vesszük a két változó összegét, tegyük fel a két változónk most "a" és "b". Ez alapján első lépésünk a következő legyen:
+	</para>
+<programlisting language="c"><![CDATA[a = a + b;]]></programlisting> 
+	<para>
+	Ezáltal az új "a" értéke az összeg lesz. Ezután következő lépésünk legyen az alábbi:
+	</para>
+<programlisting language="c"><![CDATA[b = a - b;]]></programlisting>
+	<para>
+	Így "b" értéke már is az eredeti "a" értékét hordozza magába. Ugyanis az összegből vontuk ki a "b" értékét ami így a régi "a" értékét adja. Már csak a régi "b" értéket kell megadni az új "a"-nak amit a következő képpen tehetünk meg:
+	</para>
+<programlisting language="c"><![CDATA[a = a - b;]]></programlisting>
+	<para>
+	És kész is vagyunk az érték felcsereléssel, most már az "a" hordozza a régi "b" értéket és a "b" a régi "a"-t. Ugyanis az összegből kivontuk az új "b" értéket ami a régi "a" értékkel azonos, tehát a régi "b" értéket adja vissza.
+	</para>
+	<para>Ez egy egyszerű ám de hasznos feladat, később sokszor alkalmazhatjuk, valamint megértése is triviális, egy általános iskolás számára is.</para>
+    </section>                     
+
+    <section>
+        <title>Labdapattogás</title>
+        <para>
+            Először if-ekkel, majd bármiféle logikai utasítás vagy kifejezés
+            nasználata nélkül írj egy olyan programot, ami egy labdát pattogtat a karakteres konzolon! (Hogy mit értek
+            pattogtatás alatt, alább láthatod a videókon.)
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/08/28/labdapattogas">https://bhaxor.blog.hu/2018/08/28/labdapattogas</link>
+        </para>
+        <para>
+            Megoldás forrása:  
+        </para>
+	<para>
+If segítségével való labda pattogtatás:
+<link xlink:href="./Turing/labdaif.c">
+<filename>Labdaif</filename>
+</link>                
+        </para>
+	<para>
+Logikai utasítás vagy kifejezés használata nélkül való labda pattogtatás:
+<link xlink:href="./Turing/labda.c">
+<filename>Labda</filename>
+</link>
+	</para>
+	<para>
+	<type>If</type>-ek használatával, egy fokkal könnyebb dolgunk van, mint ha nem használhatnánk őket. Ugyanis ennek a feladatnak az a lényege hogy kövessük a "labda" mozgását, és az amint eléri a konzolunknak a "falát" a mozgásának az iránya megforduljon/megváltozzon. <type>If</type>-ek segítségével ezt az ellenőrzést könnyebben vizsgálhatjuk mint a következő esetben ahol nem használhatunk logika utasítást vagy kifejezést.
+	</para>
+<programlisting language="c"><![CDATA[        if ( x>=mx-1 ) { 			// elérte-e a jobb oldalát?
+            xnov = xnov * -1;
+        }
+        if ( x<=0 ) { 				// elérte-e a bal oldalát?
+            xnov = xnov * -1;
+        }
+        if ( y<=0 ) { 				// elérte-e a tetejét?
+            ynov = ynov * -1;
+        }
+        if ( y>=my-1 ) {			 // elérte-e az alját?
+            ynov = ynov * -1;
+        }]]></programlisting>
+	<para>
+        A feladathoz a programnak tudnia kell a konzolunk méretét, ugyanis csak így tudja hol a konzol "fala". Úgy képzeljük el hogy a konzol mérete alapján létre hozz egy "táblázatot" ahol a határértékek megegyeznek, így ha oda ér a "labdánk" akkor megváltoztatja irányát, míg bárhol máshol a konzolon belül nem fogja megváltoztatni annak mozgását. A program folyamatosan updateli magát és ahol jár a "labda" azt kiprinteli, így tud a "labda" haladni a képernyőnkön. A program tehát nem csinál mást csak számolja a labda haladását mind x mind pedig y tengelyen való haladását és hogy az adott hely a konzol határa-e vagy sem, amint eléri a határt mozgási irányt változtat, végig követi és printeli a haladást. If-ek segítségével és if-ek nélkül is ugyan ez az alapja a programnak.
+	</para>
+    </section>                     
+
+    <section>
+        <title>Szóhossz és a Linus Torvalds féle BogoMIPS</title>
+        <para>
+            Írj egy programot, ami megnézi, hogy hány bites a szó a gépeden, azaz mekkora az <type>int</type> mérete.
+            Használd ugyanazt a while ciklus fejet, amit Linus Torvalds a BogoMIPS rutinjában! 
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href=""></link>
+        </para>
+        <para>
+            Megoldás forrása:
+        </para>
+	<para>
+Szóhossz:
+<link xlink:href="./Turing/szohossz.c">
+<filename>Szóhossz</filename>
+</link>
+	</para>
+        <para>
+	A szóhosszt a bitshift operátor segítségével tudjuk elvégezni. Ami úgy működik hogy a forráskódban szereplő "a"-t lépteti balra és a jobb oldalára pedig 0 értéket ad. Mind addig folytatja ezt míg ki nem nulláza az egészet.
+	</para>
+	<para>
+	Hogyan tudjuk meg ebből a bitek számát?
+	</para>
+	<para>
+	Minden shiftelés(léptetés) után növeljük a forráskódban lévő "b" változó értékét 1-el, teljesen a ciklus végéig, tehát ha lezárul akkor a "b" értéke pontosan a bitek számával fog megegyezni, azaz megtudja azt mondani hogy hány bites a szó a számítógépünkön.
+	</para>
+<programlisting language="c"><![CDATA[while(a != 0){
+a<<=1;
+b++;
+}]]></programlisting>
+	<para>
+	A konzolon való megjelenítéshez pedig a printf-et fogjuk használni, a következő képpen:
+	</para>
+<programlisting language="c"><![CDATA[printf("%d bites a szó.\n", b);]]></programlisting>
+	<para>A következő képpen adja vissza tehát például: 32 bites a szó.</para>
+    </section>                     
+
+    <section>
+        <title>Helló, Google!</title>
+        <para>
+            Írj olyan C programot, amely egy 4 honlapból álló hálózatra kiszámolja a négy lap Page-Rank értékét!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href=""></link>
+        </para>
+        <para>
+            Megoldás forrása:
+        </para>
+	<para>
+Page-Rank:
+<link xlink:href="./Turing/page.c">
+<filename>Page-Rank</filename>
+</link>
+	</para>
+	<para>
+	A Page-Rank egy algoritmus. Nem véletlenül a "Helló, Google!" cím, ugyanis a Page-Rank a Google keresőmotorjának az egyik legfontosabb eleme. 1998-ban fejlesztették ki a google alapítói Larry Page és Sergey Brin. Az algoritmus használata előtt közel sem volt olyan pontos a keressési találat mint napjainkban, szinte ma már a keresőbe beírt szavak alapján az első három találtba benne van a keresett oldal, ritka az amikor a találatok között is keresnünk kellene a megfelelőt, régebben még nem volt ilyen tökéletes ez. Ez a pontosság napjainkban annak köszönhető hogy a Page-Rank sorba állítja az oldalakat az alapján hogy hány link mutat rájuk valamint a rájuk mutató oldalakra hány oldal mutat. De miért is jó ez?
+	</para>
+	<para>	
+	Bonyolultnak hangzik ez és értelmetlennek viszont mint látjuk a google kereső motor példáján is, ugyancsak hasznos és működése is kiváló. Visszatérve tehát mit is jelent hogy sorba állítja az oldalakat a fent említettek alapján? Azt takrja hogy a legtöbb oldal hivatkozással rendelkező oldal lesz az első és minél kevesebb oldal hivatkozik rá annál lentebbre kerül az adott lap. Ezáltal a legtöbbet keresett oldalak/leghasználtabb/legnépszerűbb találatok lesznek legelöl, így a keresési találatok tetején 99,9% kb hogy közte van az általunk keresett oldal.
+	</para>
+	<para>
+	A feladatban egy 4 honlapból álló hálózatra nézzük meg a Page-Rank értéket.
+	</para>
+	<para>
+	Az alap érték 1/4-ed lesz minden oldalnak mivel ugye 4 oldalt nézünk most. Az oldalak közötti kapcsolatot egy mátrixban tároljuk el, a következőféleképpen:
+	</para>
+<programlisting language="c"><![CDATA[{
+double L[4][4] = {
+{0.0, 0.0, 1.0 / 3.0, 0.0},
+{1.0, 1.0 / 2.0, 1.0 / 3.0, 1.0},
+{0.0, 1.0 / 2.0, 0.0, 0.0},
+{0.0, 0.0, 1.0 / 3.0, 0.0}
+};]]></programlisting>
+	<para>
+	Egy fajta táblázati nézetként tudható ez be, a sorok és az oszlopok megfelelő találkozási pontjánál olvasható le a kapcsolatuk. Ezekel az adatokkal a megfelelő matematikai műveletekkel, mint például a mátrixszorzás, kapjuk meg az oldalak Page-Rank értékét. Ezek az értékek egy tömbe lesznek ami az eredmény tömbünk, ezt akár ki is lehet írtani, így láthatóvá téve az eredményeket a terminálon vagy egy output fájlba. A Page-Rank-ot lehet használjuk nap mint nap is akár keresőmotor használatával például, de magát a kódot nem kell alkalmaznunk, viszont érteni igen, tehát ezt a feladatot inkább megértésre és kód olvasásra ajánlanám, jó magam se írtam meg újra a kódót, internetről szedett kódot mellékeltem tanulmányozásra.
+	</para>
+    </section>
+
+    <section xml:id="Brun">
+        <title>100 éves a Brun tétel</title>
+        <para>
+            Írj R szimulációt a Brun tétel demonstrálására!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/xbYhp9G6VqQ">https://youtu.be/xbYhp9G6VqQ</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Primek_R">https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Primek_R</link>
+        </para>
+	<para>
+	A Brun tétel a prímszámokkal azon belül is az iker prímekkel foglalkozik. De mik is a prímszámok illetve az ikerprímek?
+	</para>
+	<para>
+	A prímszámok azon természetes számok melyek csak eggyel és önmagukkal oszthatóak. Ilyen például a 2, az 5, a 7 stb. A 2 egyben az első prímszám is valamint az egyetlen páros prímszám is, értelemszerűen a kettő kivételével a többi párosszám nem lehet prímszám mivel kivétel nélkül oszthatóak kettővel. A prímszámok szorzataként minden természetes szám előállítható, ezért nevezik őket a természetes számok építőelemeinek is őket. Továbbá a prímszámok száma végtelen, ezt már Krisztus előtt is tudták.
+	</para>
+	<para>
+	Az ikerprímek azon prímszámpárok amelyeknek a különbsége kettő. Például 5 és 7 ikerprímek hiszen a különbségük kettővel egyenlő. A Brun tétel erre épül, ugyanis azt nem tudni hogy az ikerprímek száma is végtelen-e vagy van úgy mond egy "utolsó" ikerprím. (Ezt mái napig kutatják még.)
+	</para>
+	<para>
+	A Brun tétel azt mondja ki, hogy az ikerprímek reciprokaiból képzett sor összege véges vagy legalábbis végtelen sor konvergens, azaz az így képzett törtszámok egy határt képeznek amit nem lépnek át soha, ezt a határ értéket Brun konstansnak nevezik.
+	</para>
+	<para>
+	A mellékelt forrásban lévő kód ezt a "határértéket", ún. Brun konstanst próbálja elérni.
+	</para>
+<programlisting language="c"><![CDATA[primes = primes(x)]]></programlisting>
+	<para>
+	Az x-nek megadott számig kiszámolja a prímeket.
+	</para>
+<programlisting language="c"><![CDATA[diff = primes[2:length(primes)]-primes[1:length(primes)-1]]]></programlisting>
+	<para>
+	Megnézi a prímek közti különbséget, ez azért fontos mivel így kitudjuk szűrni az ikerprímeket ugyanis azok közti különbség mindig kettő.
+	</para>
+<programlisting language="c"><![CDATA[idx = which(diff==2)]]></programlisting>
+	<para>
+	Kitudjuk szedni az első tagot, és az alapján +2-vel a hozzá tartozó párt, az így kapott számok ikerprímek lesznek tehát nekik kell a reciprokuk.
+	</para>
+<programlisting language="c"><![CDATA[t1primes = primes[idx]
+    t2primes = primes[idx]+2
+    rt1plust2 = 1/t1primes+1/t2primes]]></programlisting>
+	<para>
+	Ezeket a törteket összeadva kell kapnunk azt az értéket mely körülbelül az 1,8-hoz közelít minél több számot vizsgálunk át. Ezt a sum-mal tehetjük meg.
+	</para>
+<programlisting language="c"><![CDATA[return(sum(rt1plust2))]]></programlisting>
+	<para>
+	Persze szemléletesebb a dolog ha ki is rajzoltatjuk őket.
+	</para>
+<programlisting language="c"><![CDATA[x=seq(13, 1000000, by=10000)
+y=sapply(x, FUN = stp)
+plot(x,y,type="b")
+]]></programlisting>
+    </section>
+    
+    <section xml:id="bhax-textbook-feladatok-turing.MontyHall">
+        <title>A Monty Hall probléma</title>
+        <para>
+            Írj R szimulációt a Monty Hall problémára!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2019/01/03/erdos_pal_mit_keresett_a_nagykonyvben_a_monty_hall-paradoxon_kapcsan">https://bhaxor.blog.hu/2019/01/03/erdos_pal_mit_keresett_a_nagykonyvben_a_monty_hall-paradoxon_kapcsan</link>
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/MontyHall_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/MontyHall_R</link>
+        </para>
+	<para>
+	A Monty Hall paradoxonra épülő "műsor" lényege az hogy van 3 ajtó, de csak az egyik mögött van értékes nyeremény, a másik kettő mögött értéktelen dolog van, vagy semmi, a paradoxon szempontjából nem lényeges, csak annyi hogy 1 jó és 2 rossz választás van. A játékosnak lehetősége van az egyik ajtót megjelölni, hogy azt szeretné majd kinyitni, de ezután a játékvezető kinyit egy rossz ajtót, és megengedi hogy változtasson a választásán a játékos, de ezt csak egyszer teheti meg. Nyilvánvalóan a játékvezető tudja hogy hol a nyeremény és csak azt az ajtót nyitja ki ami mögött nincs az értékes nyeremény, valamint a játékos által megjelölt (elsőnek kiválasztott) ajtót sem nyithatja a játékvezető.
+	</para>
+        <para>
+            A Monty Hall probléma/paradoxon tehát egy érdekes téma, ugyanis nem mindenkinek triviális elsőre az hogy érdemes változtatni. Jó magam se értettem hogy miért lenne érdemesebb változtatni a döntésen. Hisz 50-50% esély van hogy értékes vagy sem a mögötte lévő dolog. Hisz egy rossz ajtót "kizár" a játékvezető, aztán újra nálunk a döntés mintha alapból csak 2 ajtó lenne.
+        </para>
+	<para>
+	De ha jobban belegondolunk valóban igaz az hogy elsőre 66% eséllyel egyik rossz választásra bökünk rá, míg csak 33% az esély hogy egyből a jót találjuk el. Így a szabályoknak megfelelően ha kizárjuk az egyik rossz ajtót, 66% esély arra hogy a változtatás után nyerünk és csak 33% az esély arra hogy ha nem változtatunk akkor nyerünk.
+	</para>
+	<para>
+	A forrásban szereplő kód áttanulmányozása után is jól látható, hogy mi a "műsor" lényege. Láthatjuk azt is hogy a műsorvezetőnek adott az ajtó ha a játékos elsőre rosszat választ, mivel sem a jót sem a játékos ajtaját nem nyithatja ki.
+	</para>
+<programlisting language="c"><![CDATA[kiserlet = sample(1:3, kiserletek_szama, replace=T)
+jatekos = sample(1:3, kiserletek_szama, replace=T)
+musorvezeto=vector(length = kiserletek_szama)
+
+for (i in 1:kiserletek_szama) {
+
+    if(kiserlet[i]==jatekos[i]){
+    
+        mibol=setdiff(c(1,2,3), kiserlet[i])
+    
+    }else{
+    
+        mibol=setdiff(c(1,2,3), c(kiserlet[i], jatekos[i]))
+    
+    }
+
+    musorvezeto[i] = mibol[sample(1:length(mibol),1)]
+
+}]]></programlisting>
+<para>Nagyon jó kis gondolkodós példa, a forráskód Bátfai Norbert Tanár úr-é és R nyelvben íródott, de R nyelvet sose látott olvasók számára is olvasható véleményem szerint.</para>
+<para>Ehhez a feladathoz ajánlom a "21 Las Vegas ostroma" című filmet, mely az ajánlott filmek között már fentebb is megtalálható volt, ebben szerepelni fog a Monthy Hall probléma.</para>
+
+
+    </section>
+
+</chapter>                

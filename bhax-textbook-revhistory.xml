@@ -1,0 +1,133 @@
+<revhistory xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <revision>
+        <revnumber>0.0.1</revnumber>
+        <date>2019-02-12</date>
+        <authorinitials>nbatfai</authorinitials>
+        <revremark>
+            Az iniciális dokumentum szerkezetének kialakítása.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.0.2</revnumber>
+        <date>2019-02-14</date>
+        <authorinitials>nbatfai</authorinitials>
+        <revremark>
+            Inciális feladatlisták összeállítása.
+        </revremark>
+    </revision>    
+    <revision>
+        <revnumber>0.0.3</revnumber>
+        <date>2019-02-16</date>
+        <authorinitials>nbatfai</authorinitials>
+        <revremark>
+            Feladatlisták folytatása.
+            Feltöltés a BHAX csatorna 
+            <link xlink:href="https://gitlab.com/nbatfai/bhax">https://gitlab.com/nbatfai/bhax</link>
+            repójába.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.0.4</revnumber>
+        <date>2019-02-19</date>
+        <authorinitials>nbatfai</authorinitials>
+        <revremark>
+            Aktualizálás, javítások.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.0</revnumber>
+        <date>2019-02-27</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Feladatok elkészítésének megkezdése.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.1</revnumber>
+        <date>2019-03-04</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Első feladatcsokor (2.fejezet) befejezve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.2</revnumber>
+        <date>2019-03-10</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Harmadik fejezet elkészítve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.3</revnumber>
+        <date>2019-03-16</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Negyedik fejezet elkészítve
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.4</revnumber>
+        <date>2019-03-26</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Ötödik fejezet befejezve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.5</revnumber>
+        <date>2019-04-02</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Hatodik fejezet befejezve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.6</revnumber>
+        <date>2019-04-07</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Hetedik fejezet befejezve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.7</revnumber>
+        <date>2019-04-18</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Olvasónaplók kidolgozva.
+        </revremark>
+    </revision>
+	<revision>
+        <revnumber>0.1.8</revnumber>
+        <date>2019-04-23</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Nyolcadik fejezet elkészítve.
+        </revremark>
+    </revision>
+	<revision>
+        <revnumber>0.1.9</revnumber>
+        <date>2019-04-27</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Kilencedik fejezet elkészült.
+        </revremark>
+    </revision>
+	<revision>
+        <revnumber>0.2.0</revnumber>
+        <date>2019-05-09</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            Feladatok finomításai, és véglegesítései.
+        </revremark>
+    </revision>
+	<revision>
+        <revnumber>1.0.0</revnumber>
+        <date>2019-05-10</date>
+        <authorinitials>nraccoon</authorinitials>
+        <revremark>
+            A könyv első teljes kiadása.
+        </revremark>
+    </revision>
+</revhistory>
