@@ -15,9 +15,162 @@ megoldásra: jobb OO tervezés.
 (számos példa szerepel az elv megsértésére az UDPROG repóban, lásd pl. source/binom/Batfai-
 Barki/madarak/)
 	</para>
+	<para>
+	A Liskov elv, a S.O.L.I.D. elvek közül az L nyelv jelentése, hogy ha egy programban T altípusa S akkor ahol használható T, lecserélhető T-nek S altípusával anélkül, hogy az hatással lenne a program tulajdonságára. A feladat eme elv megsértése.
+	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            A feladatot Bátfai Tanárúr ötlete alapján a madarak repülése/nem repülése által mutatnám be. Mit is értek ez alatt? Nézzük meg a kódot, először Javában:
         </para>
+<para><link xlink:href="./Liskov/Liskov.java"><filename>Liskov.java</filename></link></para>
+	<para>A kód magyarázata:</para>
+<programlisting language="java"><![CDATA[class Madar{
+public
+	void repul(){
+	System.out.println("repul");
+	}
+}]]></programlisting>
+	<para>Létrehozunk egy "Madar" osztályt amiben van egy public metódus, "tulajdonság", még pedig a repülés.</para>
+<programlisting language="java"><![CDATA[class Sas extends Madar{}
+
+class Pingvin extends Madar{}]]></programlisting>
+	<para>A "Madar"-ak osztályának képzünk két gyermek osztályt a "Sas" és a "Pingvin" osztályokat. Amik öröklik a "Madar"-ak osztály "tulajdonságait".</para>
+<programlisting language="java"><![CDATA[class Program{
+public
+	void reptet(Madar madar){
+	madar.repul();
+	}]]></programlisting>
+	<para>Valamint létrehozunk egy "Program" osztályt, mely képes lesz "reptet"-ni madarainkat.</para>
+<programlisting language="java"><![CDATA[public static void main (String[] args){
+
+	Program program = new Program();
+	Madar madar = new Madar();
+	program.reptet(madar);
+
+	Sas sas = new Sas();
+	program.reptet(sas);
+
+	Pingvin pingvin = new Pingvin();
+	program.reptet(pingvin);
+	}]]></programlisting>
+	<para>A main-be pedig ki is próbáljuk hogy valóban örökölték-e a repülést, és a "program" valóban megtudja-e őket reptetni.</para>
+	<para>
+	Ha az egészet fordítjuk és futtatjuk a következő fogad minket:
+	</para>
+	<figure>
+	<title>Liskov.java futatása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/Liskov.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Mi a hiba?
+	</para>
+	<para>
+	A gond az hogy a pingvin is repül a kód alapján, míg köztudott hogy a pingvinek nem repülnek. De miért van ez?
+	</para>
+	<para>
+	Azért van, mert a "Madar"-ak osztályból lett leszármaztatva, és az osztályon belül deklarálva van a repülés, így azt is elörökölte mind a sas, mind a pingvin.
+	</para>
+	<para>
+	Ugyan ez a kód C++-ban (nem taglalnám külön részekre hisz teljesen ugyan az a felépítése):
+	</para>
+<para><link xlink:href="./Liskov/madar.cpp"><filename>madar.cpp</filename></link></para>
+<programlisting language="java"><![CDATA[#include <iostream>
+using namespace std;
+
+class Madar{
+public:
+	void repul(){
+	cout << "Repul" << endl;
+	}
+};
+
+class Program{
+public:
+	void reptet(Madar &madar){
+	madar.repul();
+	}
+};
+
+class Sas : public Madar{};
+
+class Pingvin : public Madar{};
+
+int main(){
+
+	Program program;
+	Madar madar;
+	program.reptet(madar);
+
+	Sas sas;
+	program.reptet(sas);
+
+	Pingvin pingvin;
+	program.reptet(pingvin);
+}]]></programlisting>
+	<para>
+	C++ verzió futás közben:
+	</para>
+	<figure>
+	<title>madar.cpp futatása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/madar.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	C++-nál is ugyan az a helyzet. De van rá megoldás mindkét nyelvben, mivel nagy a hasonlóság én csak C++-ban mutatnám be, hogy is tudjuk ezt a problémát hamar orvosolni.
+	</para>
+	<para>
+	A logikailag (is) helyes megoldás:
+	</para>
+<para><link xlink:href="./Liskov/megoldasmadar.cpp"><filename>megoldasmadar.cpp</filename></link></para>
+<programlisting language="java"><![CDATA[class Madar{};]]></programlisting>
+<para>Létrehozzuk a "Madar" osztályt, ez esetben viszont nem kapja meg a repülés metódusát (a kódban semmit, de például beírható lenne hogy két lábuk van stb...).</para>
+<programlisting language="java"><![CDATA[class RepuloMadar : public Madar{
+public:
+	virtual void repul(){
+	cout << "Repul" << endl;
+	}
+};]]></programlisting>
+<para>Létrehozzunk egy "RepuloMadar"-ak osztályt a "Madar" osztály utódjaként, mely megkapja az előző osztálytól "elvett" repülési metódust.</para>
+<programlisting language="java"><![CDATA[class Program{
+public:
+	void reptet(RepuloMadar& rmadar){
+	rmadar.repul();
+	}
+};]]></programlisting>
+<para>Ugyanúgy megmarad a "Program" osztályunk, csak a repülőmadarakat lesz képes reptetni most már.</para>
+<programlisting language="java"><![CDATA[class Sas : public RepuloMadar{};
+
+class Pingvin : public Madar{};]]></programlisting>
+<para>A "Sas" és a "Pingvin" osztályokat ugyanúgy származtatjuk, annyi különbséggel hogy a "Pingvin" a sima "Madar" osztálytól míg a "Sas" a "RepuloMadar"-ak osztálytól fog öröklődni.</para>
+<programlisting language="java"><![CDATA[int main(){
+
+	Program program;
+
+	Sas sas;
+	program.reptet(sas);
+
+	Pingvin pingvin;
+	program.reptet(pingvin); //enélkül a sor nélkül lefordul és fut a program
+}]]></programlisting>
+<para>Main-be pedig kerül megint a "tesztelés", megpróbáljuk reptetni a madarakat.</para>
+	<para>
+	A "helyes" verzió futás közben:
+	</para>
+	<figure>
+	<title>megoldasmadar.cpp futatása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/megoldasmadar.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>Azt láthatjuk hogy hibát dob a pingvineknél, hisz azok nem képesek repülni, nem férnek hozzá a repülőmadarak tulajdonságaihoz.</para>
     </section>   
 
     <section>
@@ -28,20 +181,166 @@ keresztül csak az ős üzenetei küldhetőek!
 <link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_1.pdf</link> (98. fólia)
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Ebben a feladatban azt szemléltetjük hogy egy szülő referencián keresztül, amely a gyerek objektumára hivatkozik, egyszerűen nem tudjuk meghívni a gyermeke metódusát, amit Ő maga nem definiált. 
         </para>
+	<para> Alap esetben ugye az ősosztály rendelkezik tulajdonságokkal és metódusokkal amit a gyerek örökölni tud tőle, és ezen felül a gyermek osztály rendelkezhet olyan tulajdonságokkal és metódusokkal amivel a szülő osztály nem rendelkezik.
+	</para>
+	<para>
+	Nézzük meg a feladatot elsőnek Javában:
+	</para>
+<programlisting language="java"><![CDATA[public class Osztaly{
+
+	public static void main(String[] args){
+	Szulo sz = new Gyerek();
+	sz.kiir1();
+	sz.kiir2();
+	}
+}
+
+	class Szulo{
+	public void kiir1(){
+		System.out.println("Szulo");
+		}
+	}
+
+	class Gyerek extends Szulo{
+	public void kiir2(){
+		System.out.println("Gyerek");
+		}
+	}]]></programlisting>
+	<para>
+	Én ezzel a kóddal szemléltetném, persze máshogy is megírhattam volna, de szerintem ez szemléletesen mutatja be.
+	</para>
+	<para>
+	Mit látunk?
+	</para>
+	<para>
+	Van egy szülő osztályunk amely rendelkezik egy "kiir1" metódussal, valamint egy abból származtatott gyerek osztályunk ami szintén rendelkezik egy metódussal, amivel a szülő nem ez pedig a "kiir2".
+	</para>
+<programlisting language="java"><![CDATA[	Szulo sz = new Gyerek();
+	sz.kiir1();
+	sz.kiir2();]]></programlisting>
+	<para>
+	A mainben pedig példányosítunk a fent látható módon, ezután pedig meghívjuk mindkét függvényt rá. Fordításnál a következőket fogjuk látni:
+	</para>
+	<figure>
+	<title>Osztaly.java fordítása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/Osztaly.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Mint azt látjuk hibát dobott, ugyanis erre a példányra a "kiir2"-őt nem tudjuk meghívni mivel az szülő típusú. Ellentétben a "kiir1"-el, azt gond nélkül megtudnánk hívni, és lefordul valamint lefut a program gond nélkül. Javában minden objektum referencia, és a kötés dinamikus, de ezzel nem küldhetjük a gyerek által hozott új üzeneteket. De megnézzük ugyan ezt a példát C++-ban is, hátha van változás.
+	</para>
+	<para>
+	Tehát itt is volna ugyan ez C++-ban:
+	</para>
+<programlisting language="java"><![CDATA[#include <iostream>
+using namespace std;
+
+	class Szulo{
+	public:
+	 void kiir1(){
+		cout << "Szulo" << endl;
+		}
+	};
+
+	class Gyerek : public Szulo{
+	public:
+	 void kiir2(){
+		cout << "Gyerek" << endl;
+		}
+	};
+
+int main(){
+	
+	Szulo* sz = new Gyerek();
+
+	sz->kiir1();
+	sz->kiir2();
+
+}]]></programlisting>
+	<para>
+	A felállás változatlan, ugyanúgy rendelkezünk egy szülő és egy gyerek osztállyal, mindkettőnek ugyanúgy megvan a maga metódusa, és a mainbe ugyanúgy példányosítás után meghívjuk őket rá.
+	</para>
+	<para>
+	Nézzük meg tehát ennek a fordítását:
+	</para>
+	<figure>
+	<title>Szulo-gyerek.cpp fordítása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/szulo-gyerek.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Mit látunk?
+	</para>
+	<para>
+	Az eredmény itt is ugyan az, a "kiir2"-őt nem lehet meghívni a példányra; (A "kiir1" itt is gondnélkül meghívható lenne, fordulna és futna a program hiba nélkül.). C++-ban a "virtual" kulcsszóval tudjuk elérni a dinamikus kötést, úgy hogy az ősben a viselkedést virtuálisra deklaráljuk. Valamint itt is igaz hogy az ősosztály referencián vagy mutatón keresztül csak az ős üzeneteit képes továbbítani.
+	</para>
+	<para>
+	C++-ban több opciónk is lett volna a példányosításnál, én a mutatóval/pointerrel dolgoztam! Lehetséges opciók:
+	</para>
+<programlisting language="java"><![CDATA[	Szulo& sz = new Gyerek(); //referencia
+	Szulo* sz = new Gyerek(); //mutató
+	Szulo sz = new Gyerek(); //objektum]]></programlisting>
     </section>  
 
     <section>
         <title>Anti OO</title>
 	<para>
-	A BBP algoritmussal 4 a Pi hexadecimális kifejtésének a 0. pozíciótól számított 10, 107, 108 darab
+	A BBP algoritmussal a Pi hexadecimális kifejtésének a 0. pozíciótól számított 10^6, 10^7, 10^8 darab
 jegyét határozzuk meg C, C++, Java és C# nyelveken és vessük össze a futási időket!
 <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html#id561066</link>
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Az előző fejezetben már a BBP algoritmusról eset szó, most pedig ebből indulunk ki. A feladat az lesz hogy összehasonlítsük 4 különböző programozási nyelvben a futási időket. De minek a futását?
         </para>
+	<para>
+	A BBP algoritmus Pi hexadecimális kifejetésének a 0. poziciótól számított 1000000, 10000000, 100000000 darab jegyét. Ezeket a kódokat a feladatban megemlített oldalról vettem, ugyanis így biztos, hogy egy működő, ráadásul ugyanúgy működő kódról van szó. Tehát más feladatoktól eltérően itt Bátfai Tanár úr kódját használtam mindenhol.
+	</para>
+	<para>Az eredmény annyira nem eltérő mint talán azt gondolnánk. Először is egy kis táblázattal szeretném szemléltetni az eredményeket:</para>
+	<figure>
+	<title>Eredmények</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/eredmenyek.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>Mint az láthatjuk nálam a java volt a leggyorsabb, míg a C# a leglasabb, a C és a C++ között pedig nem figyelhető meg nagy eltérés, bár szerintem ez nem meglepő eredmény.</para>
+	<para>A C# utolsó helyének lehet az is az oka nálam, hogy azt Windowson futattam, de alapvetőleg is "hátránnyal" indult egyértelműen.</para>
+	<para>Nem teljesen volt fair azért ez az összehasonlítás, mert például a Javának vannak automatikus "optimalizáló" tulajdonságai, de valószínűleg nem tér el sokkal az igazságtól az eredmény.</para>
+	<para>A végére pedig belinkelném a kódokat, habár nem saját kódok, azért lehessen látni hogy mivel dolgoztam.</para>
+	<para>C és a C++:</para>
+<para><link xlink:href="./Liskov/Anti.c"><filename>Anti.c</filename></link></para>
+<para><link xlink:href="./Liskov/Anti.cpp"><filename>Anti.cpp</filename></link></para>
+	<para>Valamint a futásuk után:(nem sok a különbség ezért csak a c++)</para>
+	<figure>
+	<title>Anti.cpp futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/c++.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>A C# kód:</para>
+<para><link xlink:href="./Liskov/Anti.cs"><filename>Anti.cs</filename></link></para>
+	<para>Valamint a java kód:</para>
+<para><link xlink:href="./Liskov/PiBBPBench.java"><filename>PiBBPBench.java</filename></link></para>
+	<para>Valamint a java futás alatt:(C#-ról nincs képem mivel windows alatt csináltam és nem készült screenshot)</para>
+	<figure>
+	<title>PiBBPBench.java futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/java.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
     </section> 
 
     <section>
@@ -52,8 +351,63 @@ jegyét határozzuk meg C, C++, Java és C# nyelveken és vessük össze a futá
 Apró módosításokat eszközölj benne, pl. színvilág.
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            <emphasis role='strong'>A feladat megoldásában tutorált engem Győri Márk Patrik!</emphasis>
         </para>
+	<para>
+	A feladatot android studióval és azon belül emolátorral végeztem el. Ennek a beállításában segített Márk. Ugyanis én még nem használtam ezt a programot soha sem. De épp ezért talán az egyik legizgalmasabb feladat volt ez.
+	</para>
+	<para>
+	Mivel maga az eredeti kód se akarta az igazságot itt is a Márk által kissé módosított kódot használtam, remélem ez nem probléma. Részletesebben valószínűleg az Ő könyvében olvashatunk a kódról, hogy mit is módosított rajt vagy hogy bírta életre.
+	</para>
+	<para>
+	A feladat az volt hogy az SMNIST újra élesztését követően kicsit játszunk el vele, változtassuk meg pl a háttér színét vagy a szöveg színt/méretet hasonlók.
+	</para>
+	<para>
+	Én a színek megváltoztatását választottam, a következő képeken látható hogy én főként a háttér megjelenési színét változtattam, mind a főháttér, mind pedig annak a háttérnek a színét amin a pontok megjelennek.
+	</para>
+	<para>A fő háttér színét állítottam át, a pirossal aláhúzott rész került módosításra az eredmény érdekében. Alapjába véve a piros és a zöld volt a fő háttér színei, én a következő két képen látható szín árnyalatokat használtam:</para>
+	<figure>
+	<title>SMNIST háttér szín</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/hatter1.png" scale = "45"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>Valamint a másik fő háttért is módosítottam, RGB színkód alapján:</para>
+	<figure>
+	<title>SMNIST háttér szín</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/hatter2.png" scale = "45"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Továbbá a pontok megjelenése alatti háttér réteg színét is módosítottam, ez eredetileg nem RGB színkóddal volt megadva, hanem a "YELLOW" szóval ami angolul a citromsárgát jelenti, így a sárgáról módosítottam a lent látható színre a hátteret. Én jobbnak láttam RGB színkóddal megadni ezt is, mivel árnyalatokat és "nem megszokott" színeket is betudtam állítani így!
+	</para>
+	<figure>
+	<title>SMNIST pont háttér</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/hatter.png" scale = "45"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Persze emellett lehet módosítani sok mást is, de én ezeket találtam a legszemléletesebbnek, ezért ezeket módosítottam a feladat megoldása során.
+	</para>
+	<para>
+	A színeket RGB színkód alapján adtam meg, de mivel fejből nyilvánvalóan nem tudok olyan sok RGB színkódot (csak az "alapokat", de kicsit eltérőt szerettem volna), ezért a következő online RGB Calculatort vettem igénybe. A képen pont az egyik fő háttér színének az RGB-jét "számoltam ki" vele.
+	</para>
+	<figure>
+	<title>RGB színkód "generálás"</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Liskov/szin.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
     </section> 
 
     <section>
@@ -64,7 +418,7 @@ tekintetében a <link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDP
 fóliát)!
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+         <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
         </para>
     </section>     
 
