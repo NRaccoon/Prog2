@@ -16,6 +16,9 @@ megoldásra: jobb OO tervezés.
 Barki/madarak/)
 	</para>
 	<para>
+            <emphasis role='strong'>A feladat megoldásában tutoriáltam Schachinger Zsoltot!</emphasis>
+        </para>
+	<para>
 	A Liskov elv, a S.O.L.I.D. elvek közül az L nyelv jelentése, hogy ha egy programban T altípusa S akkor ahol használható T, lecserélhető T-nek S altípusával anélkül, hogy az hatással lenne a program tulajdonságára. A feladat eme elv megsértése.
 	</para>
         <para>
@@ -354,10 +357,10 @@ Apró módosításokat eszközölj benne, pl. színvilág.
             <emphasis role='strong'>A feladat megoldásában tutorált engem Győri Márk Patrik!</emphasis>
         </para>
 	<para>
-	A feladatot android studióval és azon belül emolátorral végeztem el. Ennek a beállításában segített Márk. Ugyanis én még nem használtam ezt a programot soha sem. De épp ezért talán az egyik legizgalmasabb feladat volt ez.
+	A feladatot android studióval és azon belül emolátorral végeztem el Windowson. Ennek a beállításában segített Márk. Ugyanis én még nem használtam ezt a programot soha sem. De épp ezért talán az egyik legizgalmasabb feladat volt ez.
 	</para>
 	<para>
-	Mivel maga az eredeti kód se akarta az igazságot itt is a Márk által kissé módosított kódot használtam, remélem ez nem probléma. Részletesebben valószínűleg az Ő könyvében olvashatunk a kódról, hogy mit is módosított rajt vagy hogy bírta életre.
+	Mivel maga az eredeti kód se akarta az igazságot itt is a Márk által kissé módosított kódot használtam, remélem ez nem probléma. Részletesebben valószínűleg az Ő könyvében olvashatunk a kódról, hogy mit is módosított rajta vagy hogy bírta életre.
 	</para>
 	<para>
 	A feladat az volt hogy az SMNIST újra élesztését követően kicsit játszunk el vele, változtassuk meg pl a háttér színét vagy a szöveg színt/méretet hasonlók.

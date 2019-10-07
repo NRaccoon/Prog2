@@ -15,7 +15,150 @@ kapcsolatára a forráskódban és a diagramon, lásd még: <link xlink:href="ht
 <link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog1_6.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog1_6.pdf</link> (28-32 fólia)
 	</para>
         <para>
+            A feladatban a jól ismert C++-os binfát kellet UML osztálydiagramként felrajzolni. A forrásból kellett legenerálni pontosabban. A következő forrást generáltam le az Umbrello segítségével:
+        </para>
+<para><link xlink:href="./Mandelbrot2/Binfa.cpp"><filename>Binfa.cpp</filename></link></para>
+	<para>És így néz ki a végeredmény:</para>
+	<figure>
+	<title>UML Binfa</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/16.png" scale = "52"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>De hogy is jött ez létre?</para>
+<para>Először is a "Code" fül alatt a Code Importing Wizardot kellet megnyitni:</para>
+	<figure>
+	<title>Code Importing Wizard</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/11.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>Majd itt kellett bővíteni a "List of file extensions"-t a "*.cpp"-vel ezáltal kitudtuk keresni és "berakni" a "Binfa.cpp"-t.</para>
+	<figure>
+	<title>Binfa.cpp bevitele</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/12.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>Ezután a "Start import" gombra kattintva kezdhettük meg az importálást.</para>
+	<figure>
+	<title>Importálás</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/13.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Majd importálás után a "Finish" gombra kattintva, a Three view-ba láthattuk is az importált elemeket, amiket behúzva, tudtuk a megfelelő "elemeket/vonalakat" a helyére rakni, és eredményeként kaptuk meg a fent látható képet.
+	</para>
+	<figure>
+	<title>Three view</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/15.png" scale = "55"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+    </section>
+
+    <section>
+        <title>Forward engineering UML osztálydiagram</title>
+	<para>
+UML-ben tervezzünk osztályokat és generáljunk belőle forrást!
+	</para>
+        <para>
+            Ez a feladat az előző feladat fordítotja igazából. Tehát most rajzolunk egy UML diagrammot és abból generáljuk le a hozzá tartozó kódot.
+        </para>
+	<para>Először is létre kell hoznunk egy osztályt és abba kell beaddolnunk minden egyes változót, osztályt, függvényt, metódust, mindent.</para>
+	<para>Én még nem csináltam sose ilyet, ezért egy "egyszerű" kis UML diagrammot készítettem, ami két privát változóval, és 4 darab publikus függvénnyel rendelkezik.</para>
+	<para>Amint hozzáadtuk a megfelelő elemeket valami ilyesmit kell látnunk:</para>
+	<figure>
+	<title>UML diagram</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/21.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>Ezután a az előző feladathoz hasonlóan a "Code" fül lenyitásával kezdünk, csak ez esetben viszont a Code Generation Wizard menüpontot kell választanunk.</para>
+	<figure>
+	<title>Code Generation Wizard</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/22.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>Majd a következő ablak fogad minket:</para>
+	<figure>
+	<title>Code Generation Options</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/23.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Itt tudjuk beállítani a forrás nyelvét, tehát hogy mire generálja a diagrammunk, hogy hova tegye mind ezt, és egyéb beállításokat. Next gomb segítségével haladhatunk az oldalokon, ha mindennel megvagyunk a Generate gomb segítségével le is generálja nekünk egy header fájl és egy .cpp fájl formájában, ha a C++-t választottuk.
+	</para>
+    </section>
+
+    <section>
+        <title>Egy esettan</title>
+	<para>
+A BME-s C++ tankönyv 14. fejezetét (427-444 elmélet, 445-469 az esettan) dolgozzuk fel!
+	</para>
+        <para>
             Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title>BPMN</title>
+	<para>
+Rajzoljunk le egy tevékenységet BPMN-ben!
+<link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_7.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_7.pdf</link>  (34-47 fólia)
+	</para>
+        <para>
+           Ebben a feladatban valamilyen irl folyamatot/tevékenységet kellett ábrázolni. Én egy játékba bejelentkezést ábrázoltam. Az ábrázoláshoz a Google draw.io-ját alkalmaztam. Ugyanis könnyen kezelhető, és kis erő befektetéssel is szép ábrákat lehet vele készíteni.
+        </para>
+<para>Kezelőfelülete a következőképpen néz ki:</para>
+	<figure>
+	<title>Draw.io kezelőfelülete</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/szerkesztes.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Én úgy gondolom, sok magyarázatot nem igényel az elkészített ábra, ugyanis jól látható a folyamat haladása, az elágazások és a szerver valamint a felhasználó közötti adat csere is könnyen értelmezhető. Itt van tehet a megoldásom:
+	</para>
+	<figure>
+	<title>Megoldás</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Mandelbrot2/eredmeny.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+    </section>
+
+    <section>
+        <title>TeX UML</title>
+	<para>
+Valamilyen TeX-es csomag felhasználásával készíts szép diagramokat az OOCWC projektről (pl.
+use case és class diagramokat).
+	</para>
+        <para>
+           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
         </para>
     </section>
 </chapter>

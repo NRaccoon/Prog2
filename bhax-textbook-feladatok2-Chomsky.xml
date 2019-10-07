@@ -1,0 +1,95 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Mandelbrot!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>Encoding</title>
+	<para>
+Fordítsuk le és futtassuk a Javat tanítok könyv MandelbrotHalmazNagyító.java forrását úgy, hogy a
+fájl nevekben és a forrásokban is meghagyjuk az ékezetes betűket!
+<link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html</link>
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title>OOCWC lexer</title>
+	<para>
+Izzítsuk be az OOCWC-t és vázoljuk a <link xlink:href="https://github.com/nbatfai/robocar-
+emulator/blob/master/justine/rcemu/src/carlexer.ll">https://github.com/nbatfai/robocar-
+emulator/blob/master/justine/rcemu/src/carlexer.ll</link> lexert és kapcsolását a programunk OO struktúrájába!
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title>Paszigráfia Rapszódia OpenGL full screen vizualizáció</title>
+	<para>
+Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvilág, textúrázás, a szintek jobb
+elkülönítése, kézreállóbb irányítás.
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title>Paszigráfia Rapszódia LuaLaTeX vizualizáció</title>
+	<para>
+Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvilág, még erősebb 3D-s hatás.
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+    </section>
+
+    <section>
+        <title>Perceptron osztály</title>
+	<para>
+Dolgozzuk be egy külön projektbe a projekt Perceptron osztályát!
+Lásd <link xlink:href="https://youtu.be/XpBnR31BRJY">https://youtu.be/XpBnR31BRJY</link>
+	</para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+	<para>
+           A perceptron egy algoritmus ami a gépi tanulásban játszik fontos szerepet. A bináris osztályzók tanulásában is fontos szerepet játszanak, ugyanis ezek munkaköre az hogy eltudja dönteni/el is dönti, hogy az input specifikus osztályhoz tartozik-e vagy sem. A perceptronról bővebben angolul olvashatunk a <link xlink:href="https://en.wikipedia.org/wiki/Perceptron">Wikipédia oldalán.</link>
+        </para>
+	<para>
+	Továbbá még kiemelném a perceptron felépítését, mely 3 fő részből áll:
+	</para>
+	<itemizedlist>
+	<listitem>
+                <para>A retinának nevezett első elem, ami a bemeneti jeleket fogadó cellákat tartalmazza.</para>                        
+        </listitem>
+	<listitem>
+                <para>Az asszociatív cellák, melyek összegzik a hozzájuk érkező jeleket, impulzusokat.</para>                      
+        </listitem>
+	<listitem>
+                <para>A döntési cellák rétege a perceptronok kimenetele. Az asszociatív cellákhoz hasonló képpen működnek ezek is.</para>                        
+        </listitem>
+	</itemizedlist>
+	<para>
+	Részletesebben erről és egyéb perceptron információról olvashatunk magyar nyelven a  <link xlink:href="http://mialmanach.mit.bme.hu/eloadasanyagok/perceptron">következő oldalon.</link>
+	</para>
+	<para>A hibavisszaterjesztéses algoritmus az MLP architektúra alapján származtatható. Maga az algoritmus egy tanuló eljárás. Az MLP tanítása az algoritmussal egy szemléletes képen:</para>
+
+	<figure>
+	<title>MLP tanítása hibavisszaterjesztéses algoritmussal</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Caesar/perceptron.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>A képet a következő oldalról szúrtam be: <link xlink:href="http://mialmanach.mit.bme.hu/neuralis/ch04s02">http://mialmanach.mit.bme.hu/neuralis/ch04s02</link> </para>
+    </section>
+</chapter>
