@@ -1,6 +1,6 @@
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
     <info>
-        <title>Helló, Mandelbrot!</title>
+        <title>Helló, Chomsky!</title>
         <keywordset>
             <keyword/>
         </keywordset>
@@ -14,8 +14,49 @@ fájl nevekben és a forrásokban is meghagyjuk az ékezetes betűket!
 <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html</link>
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+           A feladatban a fenti linken megtalálható MandelbrotHalmaz fájlokat kellett letölteni és használni. Már letöltés után is szembetűnik valami, még pedig az hogy a fájl nevével nincs minden rendben, mert így néz ki:
         </para>
+	<figure>
+	<title>Fájlnév elváltozás</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Chomsky2/1.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Ezeket a hibás neveket visszaírjuk az eredetire, ezután megpróbáljuk futattni őket, a futtatás eredménye a következő lesz:
+	</para>
+	<figure>
+	<title>Fordítási hiba</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Chomsky2/2.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Hogy miért van ez, azt a hibakód egyértelműen elárulja, azaz az UTF-8-as kódolásban nem megtalálható karaktereket tartalmaz. És itt kezdődik igazából a feladat, ezt a problémát kell orvosolnunk. Amit az "-encoding" kapcsolóval tehetünk meg. Haználata egyszerű mindössze az "-encoding" kapcsoló után írni egy kódolás megnevezését ami tartalmazza a magyar ő, ű és egyéb ékezetes betűket. Erre a célra teljesen megfelel az ISO8859-2 (Latin 2) kódolás, így én azt használom. Tehát a következőképpen kell fordítanunk:
+	</para>
+	<figure>
+	<title>Fordítás hiba nélkül</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Chomsky2/3.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Így láthatjuk hogy hiba nélkül lefordulnak a fájlaink és még futtatni is tudjuk azt.
+	</para>
+	<figure>
+	<title>MandelbrotHalmazNagyító futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Chomsky2/4.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
     </section>
 
     <section>
@@ -26,7 +67,7 @@ emulator/blob/master/justine/rcemu/src/carlexer.ll">https://github.com/nbatfai/r
 emulator/blob/master/justine/rcemu/src/carlexer.ll</link> lexert és kapcsolását a programunk OO struktúrájába!
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
         </para>
     </section>
 
@@ -37,8 +78,82 @@ Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvil�
 elkülönítése, kézreállóbb irányítás.
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem!</emphasis>
         </para>
+    </section>
+
+    <section>
+        <title>Full screen</title>
+	<para>
+Készítsünk egy teljes képernyős Java programot!
+	</para>
+        <para>
+            Ez a feladat kicsit eltér a többitől, mert itt grafikus területen is dolgozni fogunk többet, használunk több képet is a megoldáshoz. Valamint teljes képernyőn ábrázolunk nem pedig csak egy ablakban. Valamint mozgatható karakterünk lesz, és az Esc billentyű lenyomásával kiléphetünk a "játékból". A feladathoz Bátfai Tanár úr Labirintus játékát veszem alapul.
+        </para>
+	<para>
+	A különböző KeyEventeket nem részletezném, a forrásban szépen fel van kommentelve, hogy mi miért van, a feladatra koncentrálva a teljes képernyő megoldását részletezném.
+	</para>
+	<para>
+	A teljesképernyős mód nem minden eszközön érhető el, ezért meg kell néznünk hogy át tudunk-e váltani full screen módba.
+	</para>
+ <programlisting language="java"><![CDATA[boolean fullScreenTamogatott = graphicsDevice.isFullScreenSupported();]]></programlisting>
+	<para>
+	Ha lehetséges akkor át is váltunk, valamint elkérjük a képernyő adatait, ez alatt a frekvenciát a magasságot a szélességet (felbontást), színmélységet értjük. Nyilvánvalóan ez fontos hisz, különböző adatokkal rendelkezik minden eszköz, a mi példánkban például a felbontás 1024x768 lesz, persze ez átálítható/személyre szabható.
+	</para>
+         <programlisting language="java"><![CDATA[if(fullScreenTamogatott) {
+            graphicsDevice.setFullScreenWindow(this);
+            java.awt.DisplayMode displayMode
+                    = graphicsDevice.getDisplayMode();
+            szélesség = displayMode.getWidth();
+            magasság = displayMode.getHeight();
+            int színMélység = displayMode.getBitDepth();
+            int frissítésiFrekvencia = displayMode.getRefreshRate();
+            System.out.println(szélesség
+                    + "x"  + magasság
+                    + ", " + színMélység
+                    + ", " + frissítésiFrekvencia);]]></programlisting>
+	<para>
+	Lehetséges képernyő beállításokat elkérjük valamint megnézzük hogy a fentebb említett felbontást támogatja-e ugyanis a képein erre a felbontásra készültek.
+	</para>
+            <programlisting language="java"><![CDATA[java.awt.DisplayMode[] displayModes
+                    = graphicsDevice.getDisplayModes();
+            boolean dm1024x768 = false;
+            for(int i=0; i<displayModes.length; ++i) {
+                if(displayModes[i].getWidth() == 1024
+                        && displayModes[i].getHeight() == 768
+                        && displayModes[i].getBitDepth() == színMélység
+                        && displayModes[i].getRefreshRate() 
+                        == frissítésiFrekvencia) {
+                    graphicsDevice.setDisplayMode(displayModes[i]);
+                    dm1024x768 = true;
+                    break;
+                }
+                
+            }]]></programlisting>
+	<para>
+	Ha nem lehetséges elérni ezt a felbontást azt közöljük a felhasználóval a következőképpen:
+	</para>
+            <programlisting language="java"><![CDATA[if(!dm1024x768)
+                System.out.println("Nem megy az 1024x768, de a példa képméretei ehhez a felbontáshoz vannak állítva.");]]></programlisting>
+	<para>
+	A feladat szempontjából a kód ezen része volt fontos, de érdemes megnézni az egész kódot és a kommentelését, mert a kis játékunk irányítása és a világ megalkotása is szépen ki van vitelezve.
+	</para>
+<para>Felkommentelt fő forrás fájl:</para>
+	<para>
+	<link xlink:href="./Chomsky2/Labirintus/src/LabirintusJáték.java">
+<filename>LabirintusJáték</filename>
+</link>
+	</para>
+<para>A Chomsky2 mappán belül a Labirintus mappában megtalálhatóak a szükséges képek és egyébb források is, azokat most nem linkelném!</para>
+<para>Játék kinézete futás közben:</para>
+	<figure>
+	<title>Full screen game</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Chomsky2/Labirintus/fullscreen.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
     </section>
 
     <section>
@@ -47,7 +162,7 @@ elkülönítése, kézreállóbb irányítás.
 Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvilág, még erősebb 3D-s hatás.
 	</para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem! (A Full screen (deprecated) feladatot választottam helyette)</emphasis>
         </para>
     </section>
 
@@ -57,9 +172,6 @@ Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvil�
 Dolgozzuk be egy külön projektbe a projekt Perceptron osztályát!
 Lásd <link xlink:href="https://youtu.be/XpBnR31BRJY">https://youtu.be/XpBnR31BRJY</link>
 	</para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
 	<para>
            A perceptron egy algoritmus ami a gépi tanulásban játszik fontos szerepet. A bináris osztályzók tanulásában is fontos szerepet játszanak, ugyanis ezek munkaköre az hogy eltudja dönteni/el is dönti, hogy az input specifikus osztályhoz tartozik-e vagy sem. A perceptronról bővebben angolul olvashatunk a <link xlink:href="https://en.wikipedia.org/wiki/Perceptron">Wikipédia oldalán.</link>
         </para>
@@ -80,16 +192,37 @@ Lásd <link xlink:href="https://youtu.be/XpBnR31BRJY">https://youtu.be/XpBnR31BR
 	<para>
 	Részletesebben erről és egyéb perceptron információról olvashatunk magyar nyelven a  <link xlink:href="http://mialmanach.mit.bme.hu/eloadasanyagok/perceptron">következő oldalon.</link>
 	</para>
-	<para>A hibavisszaterjesztéses algoritmus az MLP architektúra alapján származtatható. Maga az algoritmus egy tanuló eljárás. Az MLP tanítása az algoritmussal egy szemléletes képen:</para>
+	<para>
+	A fenti részeket a Prog1-es perceptronos feladatomból emeltem át, egy kis ismétlés/ismertetés szempontjából. A mostani feladatunk viszont az lesz,hogy kapjon egy képet bemenetként (A mandelbrot.cpp által létrehozott Mandelbrot-halmaz kép tökéletes lesz.) és ennek a képnek fogja venni az egyik színkódját ami majd a többrétegű perceptronunk bemenete lesz.
+	</para>
+	<para>Első lépésként is include-olnunk kell a megfelelő könyvtárakat. Mivel szükségünk lesz a többrétegűségre ezért kell az mlp (Multi Layer Perceptron) könyvtára is, és mivel a PNG képpel fogunk dolgozni ezért a png könyvtárra is szükség lesz, ezeket így tudjuk majd elérni:</para>
+<programlisting language="java"><![CDATA[#include <iostream>
+#include "mlp.hpp"
+#include <png++/png.hpp>]]></programlisting>
+	<para>
+	A main elején a képünk beolvasása történik, így tudunk rajta dolgozni, még hozzá a "get_width" és a "get_height" segítségével. Valamint a new operátor segítségével létrehozzuk a perceptronunkat.
+	</para>
+<programlisting language="java"><![CDATA[int main(int argc, char ++argv){
+png::image <png::rgb_pixel> png_image(argv[1]);
 
-	<figure>
-	<title>MLP tanítása hibavisszaterjesztéses algoritmussal</title>
-	<mediaobject>
-		<imageobject>
-		<imagedata fileref="./Caesar/perceptron.png" scale = "60"/>
-		</imageobject>
-	</mediaobject>
-	</figure>
-<para>A képet a következő oldalról szúrtam be: <link xlink:href="http://mialmanach.mit.bme.hu/neuralis/ch04s02">http://mialmanach.mit.bme.hu/neuralis/ch04s02</link> </para>
+int size = png_image.get_width()*png_image.get_height();
+
+Perceptron *p = new Perceptron(3, size, 256, 1);]]></programlisting>
+	<para>
+	Ezután egy double típusú változót hozzunk létre. Valamint a for ciklusok végig mennek a kép szélesség és maggasági pontokon. A képpontokat image tárolni fogja a képállomány vörös színkomponensét (mivel a kódban ezt adtuk meg). A value pedig azt a double típusú számot amit majd kiíratunk a végén.
+	</para>
+<programlisting language="java"><![CDATA[double* image = new double[size];
+for(int i = 0; i<png_inamge.get_width(); ++i)
+	for(int j = 0; i<png_image.get_height(); ++j)
+	image[i*png_image.get_width()+j] = png_image[i][j].red;
+
+double value = (*p) (image);
+
+cout << value << endl;]]></programlisting>
+	<para>
+	A kódunk végén pedig elvégezzük a szükséges hely felszabadítást a memóriában, amit a következő képpen teszünk:
+	</para>
+<programlisting language="java"><![CDATA[delete p;
+delete [] image;]]></programlisting>
     </section>
 </chapter>
