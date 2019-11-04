@@ -12,6 +12,52 @@
 Gengszterek rendezése lambdával a Robotautó Világbajnokságban
 <link xlink:href="https://youtu.be/DL6iQwPx1Yw">https://youtu.be/DL6iQwPx1Yw</link>
 	</para>
+	<para>
+	Ebben a feladatban az std::sort() függvényt fogjuk alkalmazni. Ez a függvény 3 paramétert vár, az első az hogy mettől a második az hogy meddig szeretnénk rendezni a vektort/tömböt. A 3. pedig az, hogy mi alapján szeretnénk rendezni.
+	</para>
+	<para>
+	Épp ezért, a 3. paraméter miatt, meg kell ismerkedjünk a lambdával, ugyanis a feladatunk az hogy rendezzük a lambdával a gengsztereket.
+	</para>
+	<para>
+	A lambda szintaxisa a következő:
+	</para>
+<programlisting language="java"><![CDATA[[](paraméterek)-> visszatérés típusa {utasítások}]]></programlisting>
+	<para>
+	A felépítése a következő: [] jelek közé a függvényen kívüli változókat kell megadni amiket elszeretnénk érni, aztán a paramétereket kell megadnunk, majd a visszatérést.
+	</para>
+	<para>
+	De nézzük is meg hogy akkor a jelenesetben az std:sort() függvény és a lambda függvény hogyan épül fel a gengszterekkel.
+	</para>
+<programlisting language="java"><![CDATA[std::sort {gangsters.begin(), gangsters.end(), [this, cop] (Gangster x, Gangster y,) {
+	return dst (cop, x.to) < dst (cop, y.to);
+	}
+};]]></programlisting>
+	<para>
+	Tehát mit láthatunk?
+	</para>
+	<para>
+	Talán abban megegyezhetünk, hogy maga a sort függvény nem meglepő, első paraméterként megkapta a gengszterek elejét míg második paraméterként megkapta azok végét a begin() és az end() függvények segítségével, így tehát az egészet fogja vizsgálni, 3. paraméterként pedig megkapta a fent említett és várt lambda függvényt! Viszont nézzük meg inkább a lambdát talán ez az ami érdekesebb.
+	</para>
+	<para>
+	Külső változónak megadtuk a "this"-t, tehát az aktuális objektumot, és a "cop" objektumotot.
+	</para>
+<programlisting language="java"><![CDATA[[this, cop]]]></programlisting>
+	<para>
+	Paraméternek megadtuk a Gangster x és y objektumot, amik ugye a sort-tal mindig összelesznek hasonlítva.
+	</para>
+<programlisting language="java"><![CDATA[(Gangster x, Gangster y,)]]></programlisting>	
+	<para>
+	A vizsgálat pedig a szerint fog történni hogy melyik gengszter van közelebb a rendőrhöz.  
+	</para>
+<programlisting language="java"><![CDATA[{
+	return dst (cop, x.to) < dst (cop, y.to);
+	}]]></programlisting>
+	<para>
+	Így tehát ha x közelebb van a cop-hoz mint y akkor egy true értékkel tér vissza, ezért a vektor elején a rendőrhöz legközelebb álló gengszterek lesznek a vektor végén pedig a legtávolabb állók, így ha a futást befejezte egy teljesen pontos rendezést végez el nekünk.
+	</para>
+	<para>
+	Tehát a sort és a lambda függvények segítségével, a gangsters vektor elemeit rendőröktől való távolságuk szerint rendezni tudtuk (növekvő sorrendbe).
+	</para>
     </section>
 
     <section>
@@ -20,6 +66,9 @@ Gengszterek rendezése lambdával a Robotautó Világbajnokságban
 <link xlink:href="https://prezi.com/jvvbytkwgsxj/high-level-programming-languages-2-c11-allocators/">https://prezi.com/jvvbytkwgsxj/high-level-programming-languages-2-c11-allocators/</link>
 a CustomAlloc-os példa, lásd C forrást az UDPROG repóban!
 	</para>
+	<para>
+           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
+	</para>
     </section>
 
     <section>
@@ -27,6 +76,63 @@ a CustomAlloc-os példa, lásd C forrást az UDPROG repóban!
 	<para>
 Például: <link xlink:href="https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180">https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180</link>
 	</para>
+	<para>
+	Az STL a Standard Template Libary rövidítése, ami egy könyvtár, amely különböző algoritmusokat, tárolókat tartalmaz. Mint például a vector a list vagy a feladatban szereplő map is itt található.
+	</para>
+	<para>
+	Mi is az a map?
+	</para>
+	<para>
+	A mapok asszociatív tárolók. A tárolt elemek benne rendelkeznek egy adat értékkel és egy kulcs értékkel. A tárolt adatok ezen kulcs értékek szerint sorba vannak rakva. Forráskódban így néz ki a map:
+	</para>
+<programlisting language="java"><![CDATA[std::vector<std::pair<std::string, int>> sort_map ( std::map <std::string, int> &rank ){
+	std::vector<std::pair<std::string, int>> ordered;
+	
+	for ( auto & i : rank ) {
+		if ( i.second ) {
+			std::pair<std::string, int> p {i.first, i.second};
+			ordered.push_back ( p );
+		}
+	}
+
+	std::sort (std::begin ( ordered ), std::end ( ordered ),
+	[ = ] ( auto && p1, auto && p2 ) {
+		return p1.second > p2.second;
+		}
+	);
+	
+	return ordered;
+}]]></programlisting>
+	<para>
+	Létrehozzuk a sort_map nevű függvényt, amelynek a visszatérési értéke vector párok. Ez string és int párok lesznek, az std::pair-nek hála ez nem probléma hogy különböző típusú párokra van szükségünk. A függvény paraméterként pedig megkapja a fent említett std::map referenciát értékül. (mely szintén string és int párokból áll)
+	</para>
+<programlisting language="java"><![CDATA[std::vector<std::pair<std::string, int>> sort_map ( std::map <std::string, int> &rank )]]></programlisting>
+	<para>
+	Következő lépésként létrehozunk egy üres vektort mely a függvény visszatérési értéke lesz, és tartalmazni fogja majd nekünk a string és int párokat.
+	</para>
+<programlisting language="java"><![CDATA[std::vector<std::pair<std::string, int>> ordered;]]></programlisting>
+	<para>
+	Következő lépésben egy for ciklust hozunk létre, mely bejárja nekünk a rank nevű map-et, értékpárok után keresve. Úgy keresi őket hogy egy if-el megnézi hogy tartozik-e második értékpár az adot elemhez, ha igen akkor létre is hozza nekünk az std::pair adatszerkezetet, a megtalált értékeket megadva megfelelő helyre elsőnek és másodiknak. Majd ezt a létrehozott párt, eltárolja az ordered vektorba, amit fent létrehoztunk.
+	</para>
+<programlisting language="java"><![CDATA[	for ( auto & i : rank ) {
+		if ( i.second ) {
+			std::pair<std::string, int> p {i.first, i.second};
+			ordered.push_back ( p );
+		}
+	}]]></programlisting>
+	<para>
+	Utolsó lépésként pedig az ordered vektorunkat rendezzük, még pedig az első feladatban megismert módszerrel, azaz a sort és a lambda használatával.
+	</para>
+<programlisting language="java"><![CDATA[	std::sort (std::begin ( ordered ), std::end ( ordered ),
+	[ = ] ( auto && p1, auto && p2 ) {
+		return p1.second > p2.second;
+		}
+	);]]></programlisting>
+	<para>
+	Mint azt látjuk a rendezés itt is az elejétől a végéig tart, tehát a vektor összes elemét rendezzük megint. 3. paraméterként szintén egy lambda alakú kitevésünk van. Ezesetben a [] között egy "=" szerepel, ami arra utal, hogy másolással fogja most átvenni a változókat nem pedig referenciával. A paraméterei két auto típusú érték, visszatérési értéke pedig megint boolean típusú, aminek az értékét a p1 és a p2 összehasonlítása fogja megadni.
+	</para>
+	<para>Ezután már csak a rendezett vektorunkat adjuk vissza:</para>
+<programlisting language="java"><![CDATA[return ordered;]]></programlisting>
     </section>
 
     <section>
@@ -35,12 +141,68 @@ Például: <link xlink:href="https://github.com/nbatfai/future/blob/master/cs/F9
 Mutassuk be a <link xlink:href="https://progpater.blog.hu/2011/03/11/alternativ_tabella">https://progpater.blog.hu/2011/03/11/alternativ_tabella</link> a programban a java.lang
 Interface ComparableT szerepét!
 	</para>
+	<para>
+	A feladat az hogy készítsünk egy alternatív tabella rendezést a labdarúgó bajnoksághoz, ami ellentétben a megszokott rendszerrel nem úgy pontoz hogy a győzelem 3 pont a döntetlen 1 pont a vereség pedig 0, hanem számításba veszi azt is hogy ki ellen történt a meccs. Így kiküszöbölve azt a problémát, hogy a 3 legerősebb csapat legyőzése is ugyanúgy 9 pontot ér mint a 3 leggyengébb csapat legyőzése.
+	</para>
+	<para>
+	Ismerős lehet ez nekünk, ami nem véletlen, ugyanis nagyon hasonlít a PageRankhoz, amivel már korábban dolgoztunk. Igazából az alternatív tabella is a PageRankon alapul, mint a google kereső motorja.
+	</para>
+<programlisting language="java"><![CDATA[Interface Comparable<T>]]></programlisting>
+	<para>
+	A Java Comparable interfészét a felhasználó által definiált típusokat rendezésre használjuk. A T annak az objektumnak lesz a típusa, amihez majd hasonlítani akarjuk ezt az interfészt implementáló objektumot. Ezt az interfészt a java.lang-ba fogjuk megtalálni, ezt a feladat is közli. És ha megnézzük egyetlen metódusa lesz ami nem más mint a "compareTo(Object)", ebben fogjuk tehát a rendezést is definiálni.
+	</para>
+	<para>
+	A feladathoz először is szükségünk lesz a Wiki2Matrix.java-ra amit én a megjelölt oldalról szedtem. Itt kell megadni a következők szerint a bajnokság adatait. Üres=0, zöld=1, srága=2, piros=3. Ezt fordítva és futatva kapunk egy linkmátrixot, amit majd az AlternativTabella.javába kell beraknunk a megfelelő helyre, valamint ott módosítani kell a csapatokat, ugyanis egy 2011-es adat szerepel benne, ami nyilván már nem állja meg a helyét, hisz az mb1 változott azóta sokat, sok csapat került ki és be.
+	</para>
+	<para>A linkmátrixról nem csatolnék képet, de a fájlaimat belinkelem ha valakit érdekel meg lehet őket tekinteni benne:</para>
+        <para>
+         <link xlink:href="./Godel/Wiki2Matrix.java">
+<filename>Wiki2Matrix</filename>
+</link>             
+        </para>
+        <para>
+           <link xlink:href="./Godel/AlternativTabella.java">
+<filename>Alternativ Tabella</filename>
+</link>             
+        </para>
+	<para>
+	Miután a linkmátrixot megadtam és módosítottam 2019 májusi adat szerint a fájl tartalmát, fordíthatjuk és futathatjuk, nem meglepő módon az eredmény tábla, nem egyezik meg a tabellával.
+	</para>
+	<figure>
+	<title>Alternativ rendezett tabella</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Godel/tabella.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	De miért is van ez vagy hogy is van ez?
+	</para>
+	<para>
+	Alapvetőleg a csapatokat a következő szabályok szerint tudják tabellán ábrázolni:
+<programlisting language="java"><![CDATA[	1) pontszám;
+	2) több győzelem;
+	3) jobb gólkülönbség;
+	4) több szerzett gól;
+	5) az egymás ellen játszott mérkőzések pontkülönbsége;
+	6) az egymás ellen játszott mérkőzések gólkülönbsége;
+	7) az egymás ellen játszott mérkőzéseken az idegenben szerzett több gól;
+	8) a fair play értékelésében elért jobb helyezés;
+	9) sorsolás]]></programlisting>
+	</para>
+	<para>
+	Ezzel ellentétben a mi rendezésünk figyelmebe veszi azt is ki ellen játszott a csapat. Így például máris jobb helyezést ért el összesítésben az MTK, ugyanis az erősebb csapatok elleni győzelem itt többet ért.
+	</para>
     </section>
 
     <section>
         <title>Prolog családfa</title>
 	<para>
 Ágyazd be a Prolog családfa programot C++ vagy Java programba! Lásd para_prog_guide.pdf!
+	</para>
+	<para>
+           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem!</emphasis>
 	</para>
     </section>
 
@@ -50,6 +212,32 @@ Interface ComparableT szerepét!
 Ha az előző félévben nem dolgoztad fel a témát (például a mandalás vagy a króm szöveges
 dobozosat) akkor itt az alkalom!
 	</para>
+        <para>Gimp Scheme Script-fu: króm effekt</para>
+        <para>
+            Írj olyan script-fu kiterjesztést a GIMP programhoz, amely megvalósítja a króm effektet egy 
+            bemenő szövegre!
+        </para>
+	<para>
+            A GIMP script mappájából tudjuk csak a kódunkat működésre bírni, valamint a programon belül is megadjuk elérési helyét ezután már is képesek leszünk kevünk szerint alakítani a színeket a szövegen. Ha futtatjuk a programot akkor kapunk egy default beállítást mindenre de persze ezeken kedvünk szerint módosíthatunk, nem köt minket semmihez. Viszont a feladat köt minket még pedig a króm effektet kell elérnünk.
+        </para>
+	<para>Na de térjünk a feladatra, első lépésként egy fekete színű hátteret hozunk létre amin a szövegünk fehér színű lesz. Ezt így érjük el:</para>
+<programlisting><![CDATA[(gimp-image-insert-layer image layer 0 0)
+    (gimp-context-set-foreground '(0 0 0))
+    (gimp-drawable-fill layer  FILL-FOREGROUND )
+    (gimp-context-set-foreground '(255 255 255))
+   
+    (set! textfs (car (gimp-text-layer-new image text font fontsize PIXELS)))
+    (gimp-image-insert-layer image textfs 0 0)   
+    (gimp-layer-set-offsets textfs (- (/ width 2) (/ text-width 2)) (- (/ height 2) (/ text-height 2)))
+   
+    (set! layer (car(gimp-image-merge-down image textfs CLIP-TO-BOTTOM-LAYER)))]]></programlisting>
+<para>Ha ezzel megvagyunk második lépésként elmossuk a szövegünket, még pedig az úgynevezett Gaussian eljárással.</para>
+<programlisting><![CDATA[(plug-in-gauss-iir RUN-INTERACTIVE image layer 15 TRUE TRUE)]]></programlisting>
+<para>3. lépésként a szövegnek az éleit görbítjük le, majd 4. lépésként pedig ezt mossuk el az előbbi módszerrel.</para>
+<programlisting><![CDATA[    (gimp-drawable-levels layer HISTOGRAM-VALUE .11 .42 TRUE 1 0 1 TRUE) 
+    (plug-in-gauss-iir RUN-INTERACTIVE image layer 2 TRUE TRUE)]]></programlisting>
+<para>A következő lépésekben lehetőségünk lesz az elején létrehozott fekete hátteret kitörölni a kép invertálása mellett, ami átlátszó lesz tehát maga a kép fog látszani ezáltal, a szöveggel pedig kedvünk szerint foglalkozhatunk, majd az utolsó (a forráskódban 9.) lépés alkalmával lesz lehetőségünk megadni a gradient effektet, amivel sikeresen késznek tudhatjuk a feladatot.</para>
+<programlisting><![CDATA[(gimp-curves-spline layer2 HISTOGRAM-VALUE 8 (color-curve))]]></programlisting>
     </section>
 
 </chapter>
