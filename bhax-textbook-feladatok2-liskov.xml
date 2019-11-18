@@ -411,18 +411,6 @@ Apró módosításokat eszközölj benne, pl. színvilág.
 		</imageobject>
 	</mediaobject>
 	</figure>
-    </section> 
-
-    <section>
-        <title>Ciklomatikus komplexitás</title>
-	<para>
-	Számoljuk ki valamelyik programunk függvényeinek ciklomatikus komplexitását! Lásd a fogalom
-tekintetében a <link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_2.pdf">https://arato.inf.unideb.hu/batfai.norbert/UDPROG/deprecated/Prog2_2.pdf</link> (77-79
-fóliát)!
-	</para>
-        <para>
-         <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
-        </para>
-    </section>     
+    </section>    
 
 </chapter>

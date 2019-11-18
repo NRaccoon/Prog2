@@ -61,17 +61,6 @@ Gengszterek rendezése lambdával a Robotautó Világbajnokságban
     </section>
 
     <section>
-        <title>C++11 Custom Allocator</title>
-	<para>
-<link xlink:href="https://prezi.com/jvvbytkwgsxj/high-level-programming-languages-2-c11-allocators/">https://prezi.com/jvvbytkwgsxj/high-level-programming-languages-2-c11-allocators/</link>
-a CustomAlloc-os példa, lásd C forrást az UDPROG repóban!
-	</para>
-	<para>
-           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
-	</para>
-    </section>
-
-    <section>
         <title>STL map érték szerinti rendezése</title>
 	<para>
 Például: <link xlink:href="https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180">https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180</link>
@@ -193,16 +182,6 @@ Interface ComparableT szerepét!
 	</para>
 	<para>
 	Ezzel ellentétben a mi rendezésünk figyelmebe veszi azt is ki ellen játszott a csapat. Így például máris jobb helyezést ért el összesítésben az MTK, ugyanis az erősebb csapatok elleni győzelem itt többet ért.
-	</para>
-    </section>
-
-    <section>
-        <title>Prolog családfa</title>
-	<para>
-Ágyazd be a Prolog családfa programot C++ vagy Java programba! Lásd para_prog_guide.pdf!
-	</para>
-	<para>
-           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem!</emphasis>
 	</para>
     </section>
 

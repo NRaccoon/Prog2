@@ -1,0 +1,59 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Calvin!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info> 
+
+    <section>
+        <title>MNIST</title>
+	<para>
+Az alap feladat megoldása, +saját kézzel rajzolt képet is ismerjen fel,
+<link xlink:href="https://progpater.blog.hu/2016/11/13/hello_samu_a_tensorflow">https://progpater.blog.hu/2016/11/13/hello_samu_a_tensorflow</link>-bol Háttérként ezt vetítsük le:
+<link xlink:href="https://prezi.com/0u8ncvvoabcr/no-programming-programming/">https://prezi.com/0u8ncvvoabcr/no-programming-programming/</link>
+	</para>
+	<para>
+
+	</para>
+    </section>
+
+    <section>
+        <title>Deep MNIST</title>
+	<para>
+Mint az előző, de a mély változattal. Segítő ábra, vesd össze a forráskóddal a
+<link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/NEMESPOR/DE/denbatfai2.pdf">https://arato.inf.unideb.hu/batfai.norbert/NEMESPOR/DE/denbatfai2.pdf</link> 8. fóliáját!
+	</para>
+    </section>
+
+    <section>
+        <title>CIFAR-10</title>
+	<para>
+Írjunk egy egyszerű Androidos „játékot”! Építkezzünk például a 2. hét „Helló, Android!” feladatára!
+	</para>
+    </section>
+
+    <section>
+        <title>Android telefonra a TF objektum detektálója</title>
+	<para>
+Telepítsük fel, próbáljuk ki!
+	</para>
+    </section>
+
+    <section>
+        <title>SMNIST for Machines</title>
+	<para>
+Készíts saját modellt, vagy használj meglévőt, lásd: <link xlink:href="https://arxiv.org/abs/1906.12213">https://arxiv.org/abs/1906.12213</link>
+	</para>
+    </section>
+
+    <section>
+        <title>Minecraft MALMO-s példa</title>
+	<para>
+A <link xlink:href="https://github.com/Microsoft/malmo">https://github.com/Microsoft/malmo</link> felhasználásával egy ágens példa, lásd pl.:
+<link xlink:href="https://youtu.be/bAPSu3Rndi8">https://youtu.be/bAPSu3Rndi8</link>, <link xlink:href="https://bhaxor.blog.hu/2018/11/29/eddig_csaltunk_de_innentol_mi">https://bhaxor.blog.hu/2018/11/29/eddig_csaltunk_de_innentol_mi</link>,
+<link xlink:href="https://bhaxor.blog.hu/2018/10/28/minecraft_steve_szemuvege">https://bhaxor.blog.hu/2018/10/28/minecraft_steve_szemuvege</link>
+	</para>
+    </section>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+</chapter>

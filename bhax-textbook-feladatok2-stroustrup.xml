@@ -73,17 +73,6 @@ osztályát (miután kicsomagoltuk az src.zip állományt, arra ráengedve)!
 	</section>
 
 	<section>
-		<title>Másoló-mozgató szemantika</title>
-		<para>
-Kódcsipeteken (copy és move ctor és assign) keresztül vesd össze a C++11 másoló és a mozgató
-szemantikáját, a mozgató konstruktort alapozd a mozgató értékadásra!
-		</para>
-	<para>
-           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
-	</para>
-	</section>
-
-	<section>
 		<title>Hibásan implementált RSA törése</title>
 		<para>
 Készítsünk betű gyakoriság alapú törést egy hibásan implementált RSA kódoló:
@@ -263,13 +252,4 @@ delete [] image;]]></programlisting>
 	</para>
 	</section>
 
-	<section>
-		<title>Összefoglaló</title>
-		<para>
-Az előző 4 feladat egyikéről írj egy 1 oldalas bemutató „”esszé szöveget!
-		</para>
-	<para>
-           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem!</emphasis>
-	</para>
-	</section>
 </chapter>

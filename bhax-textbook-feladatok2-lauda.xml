@@ -12,6 +12,49 @@
 Mutassunk rá ebben a port szkennelő forrásban a kivételkezelés szerepére!
 <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/ch01.html#id527287">https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/ch01.html#id527287</link>
 	</para>
+	<para>
+	A feladathoz a kódot készen kaptuk ami a következő volt:
+	</para>
+<programlisting language="java"><![CDATA[public class KapuSzkenner {
+    
+    public static void main(String[] args) {
+        
+        for(int i=0; i<1024; ++i)
+            
+            try {
+                
+                java.net.Socket socket = new java.net.Socket(args[0], i);
+                
+                System.out.println(i + " figyeli");
+                
+                socket.close();
+                
+            } catch (Exception e) {
+                
+                System.out.println(i + " nem figyeli");
+                
+            }
+    }
+    
+}]]></programlisting>
+	<para>
+	De mit is csinál ez, hogyan működik?
+	</para>
+	<para>
+	Egy for ciklust látunk ami 1024-ig megy 0-tól, ezeken a portszámokon szereplő TCP kapukat fogjuk vizsgálni, pontosabban rajtuk keresztül kapcsolatot létrehozni. Ha a figyeli üzenetet kapjuk vissza az annyit jelent, hogy azon a porton "nyitott" a szerverrel való kapcoslat, ha pedig ez nem igaz lök egy exceptiont amiből mi annyit látunk hogy a "nem figyeli" üzenetet kapjuk vissza.
+	</para>
+	<para>
+	Kiemelendő viszont ennél a feladatnál hogy ne engedjük rá mindenre, hisz fenyegetésnek észlelhető, ezért csak saját gépre/szerverre, vagy ismert gépre/szerverre akivel megbeszéltük!
+	</para>
+	<para>Ha fordítjuk és futtatjuk a programunkat akkor a következőt fogjuk látni tehát:</para>
+	<figure>
+	<title>KapuSzkenner futása</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Lauda/KapuSzkenner.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
     </section>
 
     <section>
@@ -20,21 +63,113 @@ Mutassunk rá ebben a port szkennelő forrásban a kivételkezelés szerepére!
 Szőj bele egy átszövő vonatkozást az első védési programod Java átiratába! (Sztenderd védési
 feladat volt korábban.)
 	</para>
-    </section>
-
-    <section>
-        <title>Android játék</title>
 	<para>
-Írjunk egy egyszerű Androidos „játékot”! Építkezzünk például a 2. hét „Helló, Android!” feladatára!
+	Az AOP jelentése, Aspect-oriented programing, azaz askpektus orientált programozás, ezt a nevet azért kapta, mert segítségével különböző aspektusokból tudjuk megfigyelni, hogy hogyan is viselkedik a kód, anélkül hogy abba belenyúlnánk. Az OO-hoz képest egy magasabb szintű absztrakciót vezet be. Azért hasznos, mivel nincs szükség a kódunkba belenyúlkálni és ott átírni/beleírni dolgokat, hanem egy külön fájlba megírjuk, majd egy complier segítségével összefüzzük a fő állományunkkal. Futtatás után pedig mindkét fájlnak külön-külön olvasható lesz a logja.
+	</para>
+	<para>
+	A feladat a LZWBinFa Java átiratába kell belefűzni egy AspectJ-s scriptet. Ami a kiir függvényen fog változtatni, még pedig annyiban hogy az inorder (eredeti) kiíratás mellett preorderben is kiírásra kerül a kimenet.
+	</para>
+	<para>
+	Ennek a megvalósításához, létrehozzunk egy pointcut-ot ami itt a feladat miatt a kiir() függvény lesz, és egyben az Aspect számára ezek lesznek a joinpoint-ok. Így az fog történi hogy a call() függvény hívással meghívjuk a kiir függvényt ami már az AspectJ-s kódszerint is le fog zajlani, míg a kiir függvényig minden ugyanúgy lemegy az LZWBinFa-ba, majd ezek után az after() függvény segítségével mind az eredeti lefutást mint pedig az AspectJ-s "módosítást", azaz a preorderben kiírást is megejelenítjuk. Így tehát eredményképpen az eredeti inorder kiírás mellé preorderben is látható lesz a kimenet, anélkül hogy az eredeti forrásban bármit is módosítottunk volna.
+	</para>
+<programlisting language="java"><![CDATA[package binfa;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public aspect order {
+
+	int melyseg = 0;
+
+	public pointcut travel(LZWBinFa.Csomopont elem, java.io.PrintWriter os) 
+		: call(public void LZWBinFa.kiir(LZWBinFa.Csomopont, java.io.PrintWriter)) && args(elem,os);
+
+	after(LZWBinFa.Csomopont elem, java.io.PrintWriter os) throws IOException : travel(elem, os)
+	{
+
+		java.io.PrintWriter kiPre = new java.io.PrintWriter(
+				new java.io.BufferedWriter(new java.io.FileWriter("preorder.txt")));
+
+		melyseg = 0;
+		preorder(elem, kiPre);
+
+		kiPre.close();
+	}
+
+	public void preorder(LZWBinFa.Csomopont elem, java.io.PrintWriter p) {
+		if (elem != null) {
+			++melyseg;
+			for (int i = 0; i < melyseg; ++i) {
+				p.print("---");
+			}
+			p.print(elem.getBetu());
+			p.print("(");
+			p.print(melyseg - 1);
+			p.println(")");
+			preorder(elem.egyesGyermek(), p);
+			preorder(elem.nullasGyermek(), p);
+
+			--melyseg;
+		}
+	}
+
+}]]></programlisting>
+	<para>
+	A fenti forrás maga az *.aj fájlunk, mint azt fentebb említettem az elején pointcutot létrehozza valamint a call segítségével meghívja a szükséges függvényt, majd meghatározza a kimenetet az after függvény törzsében. Magát az inorderből preorderbe történő átalakítást pedig a preorder függvényünk végzi, ha a szükséges fájlokkal rendelkezünk (LZWBinFa.java, order.aj, text.txt...), azok fordítása után, s futattása utána megfog jellenni a preorder.txt-nk ami tartalamzni fogja a binfa preorder bejárása szerinti kiírást.
 	</para>
     </section>
 
     <section>
         <title>Junit teszt</title>
 	<para>
-A <link xlink:href="https://progpater.blog.hu/2011/03/05/labormeres_otthon_avagy_hogyan_dolgozok_fel_egy_pedat">https://progpater.blog.hu/2011/03/05/labormeres_otthon_avagy_hogyan_dolgozok_fel_egy_pedat</link> poszt kézzel számított mélységét és szórását dolgozd be egy Junit tesztbe (sztenderd védési feladat
+	A <link xlink:href="https://progpater.blog.hu/2011/03/05/labormeres_otthon_avagy_hogyan_dolgozok_fel_egy_pedat">https://progpater.blog.hu/2011/03/05/labormeres_otthon_avagy_hogyan_dolgozok_fel_egy_pedat</link>
+poszt kézzel számított mélységét és szórását dolgozd be egy Junit tesztbe (sztenderd védési feladat
 volt korábban).
 	</para>
+	<para>
+	Először is tisztázzuk, mi is az a Junit teszt? Pontosabban mi a Junit?
+	</para>
+	<para>
+	A Junit egy keretrendszer, amit egységtesztelésre használnak, a Java programozási nyelvnél
+	</para>
+	<para>De nézzük is meg, hogy a gyakorlatban hogy néz ez ki!</para>
+<programlisting language="java"><![CDATA[@org.junit.Test]]></programlisting>
+	<para>
+	Már rögtön a 3. sorban ez fogad minket, de mi is ez? Igazából a @-cal kezdődő sorok jelölik a metódusok kezdetét, amit a Junit tesztfuttatójának futtatnia kell. Így ezek segítségével tudjuk a programot bármelyik "élethelyzetében" letesztelni.
+	</para>
+	<para>
+	Tehát a teszteset úgy fog felépülni, hogy egy @ annotációval kezdődik, majd meg kell adni a tesztelendő metódust, ami meghívásra fog kerülni és az eredményt összehasonlíthatjuk az elvárásainkkal, így biztosra menve azzal, hogy úgy működik a metódus, ahogy azt mi szeretnénk.
+	</para>
+	<para>Már léteznek egyéb annotációk és egyéb tesztelési lehetőségek Juniton belül, de a feladathoz ennyi elegendő</para>
+	<para>Nézzük is meg magát a tesztelési részt a forráskódba</para>
+<programlisting language="java"><![CDATA[public void tesBitFeldolg() {
+		for (char c : "01111001001001000111".toCharArray()) 
+		{
+			binfa.egyBitFeldolg(c);
+		}
+		org.junit.Assert.assertEquals(4, binfa.getMelyseg(), 0.0);
+		org.junit.Assert.assertEquals(2.75, binfa.getAtlag(), 0.001);
+		org.junit.Assert.assertEquals(0.957427, binfa.getSzoras(), 0.0001);
+	}]]></programlisting>
+	<para>Mint láthatjuk a testBitFeldolg függvényünk fogja végezni a teszttünket. Bitenként dolgozzuk fel a megadott tömböt, az egyBitFeldolg függvény segítségével.</para>
+	<para>Ha ezekkel megvagyunk jön az "összemérés", azaz a következő 3 sor.</para>
+	<para>
+	Az összehasonlítást az assertEquals függvény fogja képezni, aminek 3 paramétere lesz, az első paraméter az az elvárteredmény lesz, a második paraméter a program által kapott érték lesz, míg a 3. paraméter a két érték közötti eltérés megengedett értéke, ami a mi esetünkben nagyon-nagyon alacsony.
+	</para>
+	<figure>
+	<title>Elvárt értékek kiszámolása papíron</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Lauda/Junit/Junit.jpg" scale = "40"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	Az eredmény a várt, a program helyesen működik! A papíron szereplő elvárt számítási eredményeket adja vissza a program is.
+	</para>
+
+
+
     </section>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 </chapter>

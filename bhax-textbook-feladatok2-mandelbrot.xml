@@ -111,16 +111,6 @@ UML-ben tervezzünk osztályokat és generáljunk belőle forrást!
     </section>
 
     <section>
-        <title>Egy esettan</title>
-	<para>
-A BME-s C++ tankönyv 14. fejezetét (427-444 elmélet, 445-469 az esettan) dolgozzuk fel!
-	</para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
-    </section>
-
-    <section>
         <title>BPMN</title>
 	<para>
 Rajzoljunk le egy tevékenységet BPMN-ben!
@@ -151,14 +141,4 @@ Rajzoljunk le egy tevékenységet BPMN-ben!
 	</figure>
     </section>
 
-    <section>
-        <title>TeX UML</title>
-	<para>
-Valamilyen TeX-es csomag felhasználásával készíts szép diagramokat az OOCWC projektről (pl.
-use case és class diagramokat).
-	</para>
-        <para>
-           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
-        </para>
-    </section>
 </chapter>

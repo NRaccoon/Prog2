@@ -60,29 +60,6 @@ fájl nevekben és a forrásokban is meghagyjuk az ékezetes betűket!
     </section>
 
     <section>
-        <title>OOCWC lexer</title>
-	<para>
-Izzítsuk be az OOCWC-t és vázoljuk a <link xlink:href="https://github.com/nbatfai/robocar-
-emulator/blob/master/justine/rcemu/src/carlexer.ll">https://github.com/nbatfai/robocar-
-emulator/blob/master/justine/rcemu/src/carlexer.ll</link> lexert és kapcsolását a programunk OO struktúrájába!
-	</para>
-        <para>
-           <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 4-esre csökkentem!</emphasis>
-        </para>
-    </section>
-
-    <section>
-        <title>Paszigráfia Rapszódia OpenGL full screen vizualizáció</title>
-	<para>
-Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvilág, textúrázás, a szintek jobb
-elkülönítése, kézreállóbb irányítás.
-	</para>
-        <para>
-            <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem!</emphasis>
-        </para>
-    </section>
-
-    <section>
         <title>Full screen</title>
 	<para>
 Készítsünk egy teljes képernyős Java programot!
@@ -154,16 +131,6 @@ Készítsünk egy teljes képernyős Java programot!
 		</imageobject>
 	</mediaobject>
 	</figure>
-    </section>
-
-    <section>
-        <title>Paszigráfia Rapszódia LuaLaTeX vizualizáció</title>
-	<para>
-Lásd vis_prel_para.pdf! Apró módosításokat eszközölj benne, pl. színvilág, még erősebb 3D-s hatás.
-	</para>
-        <para>
-            <emphasis role='strong'>Ezt a feladatot skippelném, ezáltal a maximum érdemjegy célom 3-asra csökkentem! (A Full screen (deprecated) feladatot választottam helyette)</emphasis>
-        </para>
     </section>
 
     <section>
