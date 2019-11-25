@@ -14,23 +14,193 @@ Az alap feladat megoldása, +saját kézzel rajzolt képet is ismerjen fel,
 <link xlink:href="https://prezi.com/0u8ncvvoabcr/no-programming-programming/">https://prezi.com/0u8ncvvoabcr/no-programming-programming/</link>
 	</para>
 	<para>
-
+	Mi is az az MNIST? Az MNIST igazából egy kézzel írott arab számjegyeket tartalmazó adatbázis mely több ezer képállományt tartalmaz, ezek közül van tanulási és teszt képállomány. A tanulási képekből tanulja meg a gép a számjegyeket, majd ezt tudjuk tesztelni hogy mennyire is tanulta meg helyesen.
 	</para>
-    </section>
-
-    <section>
-        <title>Deep MNIST</title>
 	<para>
-Mint az előző, de a mély változattal. Segítő ábra, vesd össze a forráskóddal a
-<link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/NEMESPOR/DE/denbatfai2.pdf">https://arato.inf.unideb.hu/batfai.norbert/NEMESPOR/DE/denbatfai2.pdf</link> 8. fóliáját!
+	Nézzük is meg ezt a tanulási folyamatot a forrás alapján:
 	</para>
+<programlisting language="c"><![CDATA[import keras
+from keras.datasets import fashion_mnist 
+from keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D
+from keras.models import Sequential
+from keras.utils import to_categorical,np_utils
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+import tensorflow as tf
+import os]]></programlisting>
+	<para>
+	Először is importálnunk kell a szükséges könyvtárakat. Bár ezelőtti lépésként az szerepel hogy minden "beszerezzünk", jómagam is sok mindent leszedtem (lehet volt köztük olyan is ami nem is kellett :DD), többek közt szükség lesz a python3-dev-re és a python3-pip-re, a pip segítségével megnézhetjük hogy az importált könyvtárak megvannak-e nekünk, ha nincs akkor el is kezdi szedni nekünk azt.
+Én Keras-t fogok használni ezt a következő képpen tudjuk letölteni ha már minden más megvan:
+	</para>
+<programlisting language="c"><![CDATA[sudo pip3 install keras]]></programlisting>
+	<para>
+	A következő "feladatunk" az volt hogy betöltsük az adatbázist, hogy tudjunk vele dolgozni, ezért a forrásban a következő sor felelt:
+	</para>
+<programlisting language="c"><![CDATA[(train_X,train_Y), (test_X,test_Y) = tf.keras.datasets.mnist.load_data()]]></programlisting>
+	<para>
+	Most már rendelkezésünkre áll az adatbázis, nézzük tovább a forrást..
+	</para>
+<programlisting language="c"><![CDATA[train_X = train_X.reshape(-1, 28,28, 1)
+test_X = test_X.reshape(-1, 28,28, 1)]]></programlisting>
+	<para>
+	Ezek a sorok a vektorok elkészítéséért felelősök, melyeket a reshape függvény segítségével hozzunk megfelelő formára. Az az 28 darab 28 db elemet tartalmazó vektorra, ez a 2. és a 3. paraméterre a függvénynek, az első paraméter a "-1" ami azt fogja jelenteni hogy minden egyes tagra értelmezni kell, alapvetően ide az kerülne hány darabot kell konvertálni (például ha az első 10-et akarjuk csak akkor egy 10-est kellene írni ide egész egyszerűen). AZ utolsó azaz a 4. paraméter pedig a kép színcsatornájával köthető össze, mivel mi grayscale képeket használunk így az egyes kerül ide, de ha színes azaz RGB képeket használnánk akkor a 3-as számot javasolt ide írni.
+	</para>
+<programlisting language="c"><![CDATA[train_X = train_X.astype('float32')
+test_X = test_X.astype('float32')
+train_X = train_X / 255
+test_X = test_X / 255]]></programlisting>
+	<para>
+	A következő kódcsípet, azért felelős hogy a tanulás minnél gyorsabban lemenjen. Igazából egyes pixelek értékeinek módosítása ez.
+	</para>
+<programlisting language="c"><![CDATA[train_Y_one_hot = to_categorical(train_Y)
+test_Y_one_hot = to_categorical(test_Y)]]></programlisting>
+	<para>
+	One hot kódolásra is szükségünk van ugyanis a kódunk nem működik kategórikus adatokkal. Ezzel a kódolással a számjegyek 0-9-ig 9db nulla és 1db 1-es egítségével lesz leírva, különbség köztük az lesz hogy az 1-esünk mindig más helyen fog állni, így azt kell nézni majd hogy hányadik helyen áll az egyes.
+	</para>
+<programlisting language="c"><![CDATA[model = Sequential()
+
+model.add(Conv2D(64, (3,3), input_shape=(28, 28, 1)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+model.add(Conv2D(64, (3,3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2,2)))
+
+model.add(Flatten())
+model.add(Dense(64))
+
+model.add(Dense(10))
+model.add(Activation('softmax'))
+
+model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),metrics=['accuracy'])]]></programlisting>
+	<para>
+	Ezután felépítjük a szekvenciális modellünket. A rétegek egymásra helyezése rendre az add() függvény segítségével fog zajlani. Paraméterei a következők lesznek: első paraméterként a nuronok számát kell megadni (64), a második paraméter a detektor (3x3), a harmadik paramétere pedig az ún. input_shape lesz, ami a mi esetünkben 28x28 grayscale-s képek lesznek. Ezután a következő sorban aktiválunk egy relu-t (Rectified Linear Unit). Majd a következő sorban pedig azt adjuk meg hogy mennyi adat kerüljön feldolgozásra egyszerre, ezt a pool_size-al tudjuk elérni. Mely egy vertikális és egy horizontális értéket vár paraméterként. Ezután a compile fügvénnyel meg is indítjuk a tanulási folyamatot.
+	</para>
+<programlisting language="c"><![CDATA[model.fit(train_X, train_Y_one_hot, batch_size=64, epochs=1)
+
+test_loss, test_acc = model.evaluate(test_X, test_Y_one_hot)
+print('Test loss', test_loss)
+print('Test accuracy', test_acc)
+
+predictions = model.predict(test_X)
+
+print(np.argmax(np.round(predictions[0])))
+plt.imshow(test_X[0].reshape(28, 28), cmap = plt.cm.binary)
+plt.show()
+print(np.argmax(np.round(predictions[1])))
+plt.imshow(test_X[1].reshape(28, 28), cmap = plt.cm.binary)
+plt.show()
+img = Image.open('szam.png').convert("L")
+img = np.resize(img,(28,28,1))
+im2arr = np.array(img)
+im2arr = im2arr.reshape(1,28,28,1)
+print(np.argmax(np.round(model.predict(im2arr))))
+plt.imshow(im2arr[0].reshape(28,28),cmap = plt.cm.binary)
+plt.show()]]></programlisting>
+	<para>
+	Ezután beállítjuk a jellemzőket, mint például az epochs, ami azért felelős, hogy hányszor hajtsa végre a tanítási folyamatot, minél nagyobb ez a szám annál pontosabb eredményt kapunk, de a mi esetünkben 1-en hagyva és 90%+ pontosággal dolgozik a program. Valamint a kiíratásokat is itt adjuk meg, amit majd futattásnál látni fogunk. Valamint a feladat alapján egy saját kézzel írott számjegyet és beadunk neki, és megnézzük hogy azt is felismeri-e. Nézzük is hogy boldogult a számjegyekkel.
+	</para>
+
+	<figure>
+	<title>Első szám felismerése</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/7.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+
+	<figure>
+	<title>Második szám felismerése</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/2.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>	
+
+	<para>Mint azt látjuk gond nélkül felismerte a számjegyeket, most peddig nézzük meg a saját kézzel írott arab számom felismeri-e?</para>
+
+	<figure>
+	<title>Saját szám felismerése</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/6.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+
+	<para>A válasz igen, nem okozott neki gondot felismerni a 6-osom.</para>
     </section>
 
     <section>
         <title>CIFAR-10</title>
 	<para>
-Írjunk egy egyszerű Androidos „játékot”! Építkezzünk például a 2. hét „Helló, Android!” feladatára!
+Az alap feladat megoldása, +saját fotót is ismerjen fel,
+<link xlink:href="https://progpater.blog.hu/2016/12/10/hello_samu_a_cifar-10_tf_tutorial_peldabol">https://progpater.blog.hu/2016/12/10/hello_samu_a_cifar-10_tf_tutorial_peldabol</link>
 	</para>
+	<para>
+	A feladat az előzőhöz hasonló lesz, csak itt nem számokat kell felismernie, hanem tárgyakat, élőlényeket, egyéb objektumokat. Valamint még az is kiemelendő hogy ez esetben színes képekkel fogunk dolgozni és 32x32-es méretben.
+	</para>
+	<para>
+	Mivel a feladat hasonló így a kód maga se sokban különbözik az előzőtől, így a már leírtakat nem tagalalnám újra ebben a feladatban is, hanem inkább a különbségekre hívnám fel a figyelmet, kezdjük is a legelején.
+	</para>
+<programlisting language="c"><![CDATA[(train_X,train_Y), (test_X,test_Y) = cifar10.load_data()]]></programlisting>
+	<para>
+	Az első lényeges különbség hogy másik adatbázist töltünk be, ez szerintem nem meglepő, de azért fontos. Nyilván mivel színesek a képek és a méretük is más, így a következő sorok is módosításra kerültek az előző kódhoz képest:
+	</para>
+<programlisting language="c"><![CDATA[train_X = train_X.reshape(-1,32,32,3)
+test_X = test_X.reshape(-1, 32,32, 3)]]></programlisting>
+	<para>
+	Ugye az első paraméter továbbra is -1 mert minden tagra értendő, a 2. és a 3. 32-re módosul mivel 32x32-es lesz a képek mérete, a 4. pedig 3-ra módosul mivel a képek színesek. 
+	</para>
+<programlisting language="c"><![CDATA[model.add(Conv2D(64, (3, 3), activation='relu', input_shape=(32, 32, 3)))]]></programlisting>
+	<para>Így az input_shape függvény paraméterei is változnak a mostani jellemzőknek megfelelően. Illetve emeltünk a neuron számon is.</para>
+<programlisting language="c"><![CDATA[cifar_classes = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+print(cifar_classes[np.argmax(np.round(predictions[0]))])]]></programlisting>
+	 <para>
+	Az egyik legérdekesebb különbség pedig egyértelműen a class tömb, amit kézzel adtunk meg, ez azokat az objektum neveket tartalmazza amiről találhatunk képet az adatbázisban, ugyanis nyilvánvaló hogy nem fog felismerni mondjuk egy mosómedvét ha arról nem volt kép a tanítás során, valószínűleg macskának nézné. Mivel a feladat itt is kér saját képet, így ezeket figyelembe véve kell majd képet választani is!
+	 </para>
+	<para>
+	Nézzük is hogyan boldogult velük a programunk:
+	</para>
+	<figure>
+	<title>Cifar 1</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/cat.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>Cifar 2</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/deer.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>Cifar 3</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/truck.png" scale = "50"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>
+	A tanulást 25x végeztettem el vele, ugyanis egy tanulásból az első két képet határozottan airplane-nek ítélte meg míg a saját képem "truck"-nak, ezután 10/15x-ös epochs-sal is kipróbáltam, ott a fenti eredményeket adta vissza, a fentiek viszont 25x-ösek. Tehát nem épp a legjobb, mert az éppen elhetséges hogy az első egy macska, hisz azt én magam se látom ki mi is akar lenni, viszont valószínűséggel a második kép egy madarat ábrázol, hiába pixelekből hasonlít egy szarvasra, de a saját képem bizonyítja hogy közel sem tökéletes ez alapján az adatbázis esetén, hisz a beagle képem egyértelműen kutyát ábrázol, de ezt mindig truck-nak adta vissza. Eredeti kép így nézet ki, ezt adtam be neki (2,5-es nagyításban):
+	</para>
+	<figure>
+	<title>Beagle</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/beagle.jpg" scale = "250"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
     </section>
 
     <section>
@@ -38,22 +208,78 @@ Mint az előző, de a mély változattal. Segítő ábra, vesd össze a forrásk
 	<para>
 Telepítsük fel, próbáljuk ki!
 	</para>
-    </section>
-
-    <section>
-        <title>SMNIST for Machines</title>
 	<para>
-Készíts saját modellt, vagy használj meglévőt, lásd: <link xlink:href="https://arxiv.org/abs/1906.12213">https://arxiv.org/abs/1906.12213</link>
+	Itt mindössze annyi volt a feladatunk hogy szerezzük be az "app"-ot ás próbáljuk ki. Én a TF Detect és a TF Classify-t próbáltam ki, több dolgon is, azokból most párat bemutatnék:
 	</para>
-    </section>
-
-    <section>
-        <title>Minecraft MALMO-s példa</title>
+	<figure>
+	<title>TF Detect 1</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/11.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>TF Detect 2</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/12.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+<para>Na jó mondjuk ezen nem lepődtem meg hogy nem ismeri fel :DD</para>
+	<figure>
+	<title>TF Classify 1</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/21.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>TF Classify 2</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/22.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
 	<para>
-A <link xlink:href="https://github.com/Microsoft/malmo">https://github.com/Microsoft/malmo</link> felhasználásával egy ágens példa, lásd pl.:
-<link xlink:href="https://youtu.be/bAPSu3Rndi8">https://youtu.be/bAPSu3Rndi8</link>, <link xlink:href="https://bhaxor.blog.hu/2018/11/29/eddig_csaltunk_de_innentol_mi">https://bhaxor.blog.hu/2018/11/29/eddig_csaltunk_de_innentol_mi</link>,
-<link xlink:href="https://bhaxor.blog.hu/2018/10/28/minecraft_steve_szemuvege">https://bhaxor.blog.hu/2018/10/28/minecraft_steve_szemuvege</link>
+	Ezeket (fenti 4 kép) lámpafénynél készítettem és nem igazán ismerte fel őket valamint az ekkor készülteket nagyon egyiket se, ezért másnap újra próbáltam délután természetes fény mellett!
 	</para>
+	<figure>
+	<title>TF Detect 3</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/31.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>TF Detect 4</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/32.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>TF Classify 3</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/41.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<figure>
+	<title>TF Classify 4</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Calvin/TF/42.png" scale = "30"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>Itt már elég pontos és elfogadható megoldásokat kaptam.</para>
     </section>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 </chapter>
