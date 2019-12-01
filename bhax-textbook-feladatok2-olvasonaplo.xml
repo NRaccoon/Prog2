@@ -25,7 +25,7 @@ referencia, mindig dinamikus a kötés, minden függvény virtuális, klónozás
 A C++ egy általános célú programozási nyelv, amely lehetővé teszi az objektumorientált és a generikus programozást is, de alacsonyabb szintű nyelvi konstrukciókat is támogat. Míg a Java egy teljesen objektumorientált eszközkészletből építkező programozási nyelv.
 	</para>
 	<para>
-A Java jelölésrendszerében sok mindent átvett a C++-tól de sok figyelemt fordítottak mellette a megbízhatóságra, valamint a biztonságosságra, ezért a két nyelv között vannak kisebb-nagyobb eltérések, melyekre a következő sorokban/oldalakban jobban kitérnék. Ez az olvasónapló ugyanis a feladat leírása alapján is jól látszódik, hogy a két nyelvnek az összehasoníltásáról fog szólni. Főként különbségeik mentén, de nyilván hasonlóságaikról is szót ejtve.
+A Java jelölésrendszerében sok mindent átvett a C++-tól de sok figyelmet fordítottak mellette a megbízhatóságra, valamint a biztonságosságra, ezért a két nyelv között vannak kisebb-nagyobb eltérések, melyekre a következő sorokban/oldalakban jobban kitérnék. Ez az olvasónapló ugyanis a feladat leírása alapján is jól látszódik, hogy a két nyelvnek az összehasoníltásáról fog szólni. Főként különbségeik mentén, de nyilván hasonlóságaikról is szót ejtve.
 	</para>
 	<para>
 A Java fordítóprogram egy bájtkódnak nevezett formátumra fordítja le a forráskódot amit majd a Java Virtuális Gép interperterként fog értelmezni, ennek meg van az előnye és a hátránya is, előnye például biztonsági szempontokból mutatkozik leginkább, hátrányaként pedig abszolút kiemelendő a sebesség. Míg a C++ natív kód fordul, ezáltal sokkal gyorsabb, játékoknál is fontos például a gyorsaság így ezért is inkább c++-ban írnak játékfejlesztésnél(pc-re). De ugyanakkor a Java kódok így "hordozhatóak" ugyanis a bájtkód osztályok átvihetőek platformspecifikus JVM-ekre, ellentétben a C++-al. A C++ kódok platformfüggőek míg a Java programok platformfüggetlenek, a JVM-nek köszönhetően újrafordítás nélkül is futni fognak.
@@ -52,13 +52,13 @@ Továbbá a C++ lehetőséget nyújt a többszöri öröklődésre ellentétben 
 A Javában grafikai elemeket létrehozni és használni az AWT(Abstract Window Toolkit) segítségével tudunk. Vagy léztezik egy kicsit fejletebb, látványosabb elemeket alkotó Swing nevezetű könyvtár. C++-ban pedig a QT tud segítségünkre válni ha grafikai megjelenítésről van szó. Bár nekem a grafikai része a programozásnak nem túl gyakran használt, de azért mindenképp említésre méltó rész ez is.
 	</para>
 	<para>
-Javában minden objektum referencia...később kifejtem
+Javában minden objektum referencia kivétel nélkül. Nyilvánvalóan ez C++-ra egyáltalán nem igaz.
 	</para>
 	<para>
-Operátor túlterhelés C++-ban van Javában nincs...később kifejtem
+Operátor túlterhelés is különbség többek közt, ugyanis a Javában ilyenre nincs lehetőség, míg a C++ rendelkezik operátor túlterheléssel. Az operátorok jelentését is megtudjuk változtatni a saját típusainkra. Persze C++-ba se túlterhelhető minden operátor, de nagyon sok igen (a c++ operátorok wikipédia oldalán találhatunk egy táblázatot, ahol láthatjuk hogy az adott operátor túlterhelhető-e vagy sem), ami sokszor jól jöhet a feladatunk elvégzésére. Többek közt ebben a könyvben ahol ez az olvasónapló olvasható, találhatunk olyan feladatot ahol az operátor túlterhelés nagy szerepet kapott. Haználható például két string + jelel való összeadására is, ami Javában alapból működik.
 	</para>
 	<para>
-Összefoglalás....később kifejtem
+Összefoglaláskép annyi, hogy ugyan van pár lényegi különbség a két nyelv között, mégis sok azonosság felelhető, így az egyik nyelv tudatában már a másik nyelv kevesebb erő feszítéssel is megtanulható. Mindkét nyelv fontos napjainkban és megvan a maga előnye/hátránya, ezeket ismerve kihozhatjuk a maximumot belőlük. A könyvek nagyon részletesek, csak ajánlani tudom őket, nem is csak elolvasásra és abból tanulásra, de például ha "karierünk" során valami olyanba botlunk amit nem tudunk megoldani, nyugodtan fellapozhatjuk újra a megfelelő oldalakat, nagy esélyt látva arra hogy a problémánkat megoldja. Ha bár a könyv maga tartalmaz olyan kódcsípeteket vagy szituációkat ami már napjainkban nem validak, még is elviekben helyes, és nagy segítség a nyelvek elsajátításához felsőbb fokokon is, de alap szinten is megtanulhatunk dolgot persze.
 	</para>
 	</section>
 	<section>

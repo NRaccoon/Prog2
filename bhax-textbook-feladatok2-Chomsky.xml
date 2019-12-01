@@ -191,5 +191,19 @@ cout << value << endl;]]></programlisting>
 	</para>
 <programlisting language="java"><![CDATA[delete p;
 delete [] image;]]></programlisting>
+	<para>
+	Ha a kódunkat megfelelően fordítjuk, és rendelkezünk a szükséges fájlokkal akkor a következő fog minket fogadni png fájlként:
+	</para>
+	<figure>
+	<title>Mandel</title>
+	<mediaobject>
+		<imageobject>
+		<imagedata fileref="./Chomsky2/mandel.png" scale = "60"/>
+		</imageobject>
+	</mediaobject>
+	</figure>
+	<para>A megfelelő fordítás és futtatás egyébiránt a következő féleképpen néz ki:</para>
+<programlisting language="java"><![CDATA[g++ mlp.hpp main.cpp -o mandel -lpng -std=c++11
+./mandel mandel.png]]></programlisting>
     </section>
 </chapter>

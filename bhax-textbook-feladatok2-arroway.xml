@@ -48,7 +48,7 @@ A számok generálását pedig a példányon a "kovetkezo" metódus meghívásá
 	nincsTarolt = !nincsTarolt;
 	return r * v1;]]></programlisting>
 	<para>
-	Tehát összegezve egy lefuása alatt két random számot generál, amiből az egyiket eltárolja, így a következő meghívásnál "kíméljük a processzorunkat" ugyanis elég az előző eltárolt számot visszaadnia nem kell újat generálnia. A mi esetünkben így a 20 legenerált szám létrehozásához csak 10-szer kell lefutnia ténylegesen a számítási résznek.
+	Tehát összegezve egy lefutása alatt két random számot generál, amiből az egyiket eltárolja, így a következő meghívásnál "kíméljük a processzorunkat" ugyanis elég az előző eltárolt számot visszaadnia nem kell újat generálnia. A mi esetünkben így a 20 legenerált szám létrehozásához csak 10-szer kell lefutnia ténylegesen a számítási résznek.
 	</para>
 	<para>
 	Így néz ki tehát futtatásnál:
@@ -149,7 +149,7 @@ class Gagyi2{
 	De miért van ez?
 	</para>
 	<para>
-	A válasz egyszerű, a fent említett osztály gyorsítótárazási tulajdonságát kihasználva van lehetőségünk erre, ugyanis az integer [-128, 127] intervallumban már egy meglévő objektumról kapunk egy referenciát, ez pont a gyorsítótárazás miatt van, valószínűleg úgy gondolták ebben a tartományban használjuk leginkább a számokat és egy fajta könnyítés képp van ez így. Viszont ez épp elég ahoz hogy a t != x feltétel hamis értékkel térjen vissza, ezáltal a while feltétele is hamisra módusoljon, mivel ha már az egyik nem igaz akkor az egész hamis lesz.(JDK kép ként a forrást berakni!!!)
+	A válasz egyszerű, a fent említett osztály gyorsítótárazási tulajdonságát kihasználva van lehetőségünk erre, ugyanis az integer [-128, 127] intervallumban már egy meglévő objektumról kapunk egy referenciát, ez pont a gyorsítótárazás miatt van, valószínűleg úgy gondolták ebben a tartományban használjuk leginkább a számokat és egy fajta könnyítés képp van ez így. Viszont ez épp elég ahoz hogy a t != x feltétel hamis értékkel térjen vissza, ezáltal a while feltétele is hamisra módusoljon, mivel ha már az egyik nem igaz akkor az egész hamis lesz.
 	</para>
     </section>  
 
@@ -233,7 +233,10 @@ alg.pdf</link> és csak ezt tanulmányozva írjuk meg Java nyelven a BBP algorit
 	</mediaobject>
 	</figure>
 	<para>
-	Valamint a kód maga itt látható:
+	A formulát viszont nem ember találta meg, hiába Simon nevéhez fűzödik, egy számítógépes program által lett megtalálva. Persze most már létezik több változata a formulának, amik talán korszerűbbek, jobbak, gyorsabbak.
+	</para>
+	<para>
+	Nézzük meg a kódot:
 	</para>
 <programlisting language="java"><![CDATA[public PiBBP (int d){
 
@@ -242,12 +245,16 @@ double d16Pi = 0.0d;
 double d16S1t = d16Sj(d,1);
 double d16S4t = d16Sj(d,4);
 double d16S5t = d16Sj(d,5);
-double d16S6t = d16Sj(d,6);
-
-d16Pi = 4.0d*d16S1t - 2.0d*d16S4t - d16S5t - d16S6t;
-d16Pi = d16Pi - StrictMath.floor(d16Pi);
-
-StringBuffer sb = new String Buffer();
+double d16S6t = d16Sj(d,6);]]></programlisting>
+	<para>
+	A kód elején létre kell hoznunk váltózokat amik majd a tört elemekkel való számolást fogják nekünk intézni. A d16Sj() metódus segítségével adjuk meg nekik az értéküket.
+	</para>
+<programlisting language="java"><![CDATA[d16Pi = 4.0d*d16S1t - 2.0d*d16S4t - d16S5t - d16S6t;
+d16Pi = d16Pi - StrictMath.floor(d16Pi);]]></programlisting>
+	<para>
+	Ezután kiszámoljuk a megadott Pi értéket, és ezt kkerekítjük a StrictMath.floor() metódussal.
+	</para>
+<programlisting language="java"><![CDATA[StringBuffer sb = new String Buffer();
 Character hexaJegyek[] = {'A', 'B', 'C', 'D', 'E', 'F'};
 
 while(d16Pi != 0.0d){
@@ -262,9 +269,9 @@ d16Pi = (16.0d*d16Pi) - StrictMath.floor(16.0d*d16Pi);
 }
 d16PiHexaJegyek() = sb.toString();
 }]]></programlisting>
-
-<para>Az algoritmus által használt objektumot hozzuk létre, valamint "kiszámoljuk" a későbbiekben szükséges értékeket.</para>
-
+	<para>
+	A fenti kódcsípetben pedig azt láthatjuk, hogy készítünk egy buffert és egy tömböt, ami majd a hexajegyeket fogja tartalmazni. Az append() metódust is alkalmazzuk, ami azért felelős hogy az új jegyeket hozzáfűzzük a már meglévő Pi jegyekhez. Legvégül pedig az látható hogy az elkészített bufferünket stringé alakítjuk át a toString() metódussal.
+	</para>
 <programlisting language="java"><![CDATA[public double d16Sj (int d, int j){
 
 double d16Sj = 0.0d;
@@ -301,7 +308,10 @@ public static void main(String args[]){
 	System.out.print(new PiBBP(1000000));
 }
 }]]></programlisting>
-	<para>A program a futása végén kiírja számunkra a hexa jegyeket a megadott számjegytől számítva. Tehát így néz ki futtatás után:</para>
+	<para>
+	Majd a metódusokat elkészítjük a tört számok kiszámítására, majd ugye visszaadjuk a kiszámolt hexajegyeket a megadott számjegytől számítva, ez lesz az ami a terminálon látható lesz a "felhasználó" számára.
+	</para>
+	<para>Tehát így néz ki futtatásnál:</para>
 	<figure>
 	<title>PiBBP.java futása</title>
 	<mediaobject>
@@ -310,7 +320,7 @@ public static void main(String args[]){
 		</imageobject>
 	</mediaobject>
 	</figure>
-<para>Az eredmény a várt lett, visszakapjuk a hexa jegyeket gond nélkül. Még pedig a Pi hexadecimális kifejtését a 1000001. jegytől, ami a "6C65E5308".(részletesebben az egészet, you got this boii!!)</para>
-    </section>  
+<para>Az eredmény a várt lett, visszakapjuk a hexa jegyeket gond nélkül. Még pedig a Pi hexadecimális kifejtését a 1000001. jegytől, ami a "6C65E5308".</para>
+    </section>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 </chapter>                
