@@ -78,6 +78,31 @@ A számok generálását pedig a példányon a "kovetkezo" metódus meghívásá
 		</imageobject>
 	</mediaobject>
 	</figure>
+	<para>
+	És nézzük meg a JDK forrásban hogy található meg ez:
+	</para>
+<programlisting language="java"><![CDATA[synchronized public double nextGaussian() {
+	//See Knuth, ACP, Section 3.4.1 Algorithm C.
+	if(haveNextNextGaussian) {
+		haveNextNextGaussian = false;
+		return nextnextGaussian;
+	} else {
+		double v1, v2, s;
+		do {
+			v1 = 2 * nextDouble()-1; //between -1 and 1
+			v2 = 2 * nextDouble()-1; //between -1 and 1
+			s = v1 * v1 + v2 * v2;
+		}while (s >= 1 || s == 0);
+		double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s)/s);
+		nextNextGaussian = v2 * multiplier;
+		haveNextNextGaussian = true;
+		return v1 * multiplier;
+		}
+	}]]></programlisting>
+	<para>
+	Mint láthatjuk hasonlóan gondolkodtak a JDK programozói is, egy dologban tért el, ez nem más mint a synchronized public double használata. Ami azt teszi, hogy a program futását egy szálra korlátozza így ha egyszerre több hívná meg a többi szálnak várakoznia kellene, míg az első szál elvégzi a dolgát.
+	</para>
+	
     </section>       
         
     <section>
@@ -150,6 +175,17 @@ class Gagyi2{
 	</para>
 	<para>
 	A válasz egyszerű, a fent említett osztály gyorsítótárazási tulajdonságát kihasználva van lehetőségünk erre, ugyanis az integer [-128, 127] intervallumban már egy meglévő objektumról kapunk egy referenciát, ez pont a gyorsítótárazás miatt van, valószínűleg úgy gondolták ebben a tartományban használjuk leginkább a számokat és egy fajta könnyítés képp van ez így. Viszont ez épp elég ahoz hogy a t != x feltétel hamis értékkel térjen vissza, ezáltal a while feltétele is hamisra módusoljon, mivel ha már az egyik nem igaz akkor az egész hamis lesz.
+	</para>
+	<para>
+	A feladat ugyanakkor kérte itt is hogy nézzük meg a JDK forrást. Ahol a következő látható:
+	</para>
+<programlisting language="java"><![CDATA[public static Integer valueOf(int i) {
+	if(i >= IntegerCache.low && <= IntegerCache.high)
+		return IntegerCache.cache[i + (-IntegerCache.low)];
+	return new Integer(i);
+	}]]></programlisting>
+	<para>
+	Mint az fent említve volt, most láthatjuk kód formájában is, a -129 érték például már kivul fog esni az intervallumon így az már a "return new Integer(i)-vel jön létre nem pedig a poolból kapjuk mint a -128-ig. Ez pedig azt eredményezi hogy különböző memória címen fog létrejönni így a feltételünk teljesül.
 	</para>
     </section>  
 

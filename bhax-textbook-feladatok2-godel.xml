@@ -183,6 +183,14 @@ Interface ComparableT szerepét!
 	<para>
 	Ezzel ellentétben a mi rendezésünk figyelmebe veszi azt is ki ellen játszott a csapat. Így például máris jobb helyezést ért el összesítésben az MTK, ugyanis az erősebb csapatok elleni győzelem itt többet ért.
 	</para>
+	<para>
+	A JDK forrásaiban is találhatunk ezzel a témával kapcsolatos dolgot, ami a megoldásunk helyeségét alá támasztja, a következő sorok azok:
+	</para>
+<programlisting language="java"><![CDATA["Lists (and arrays) of objects that implement this interface can be sorted automatically by {@link Collection#sort(List) Collections.sort} (and {@link Arrays#sort(Object[]) Arrays.sort}). Objects that implement this interface can be used as keys in a {@linkplain SortedMap sorted map} or as elements in a {@linkplain SortedSet sorted set}, without the need to specify a {@linkplain Comparator comparator}"]]></programlisting>
+	<para>
+	Ha magyarra kellene fordítanunk valami ilyesmit takarna:
+	</para>
+<programlisting language="java"><![CDATA[Ezt a felületet megvalósító objektumok listái (és tömbjei) automatikusan rendezhetők a {@link Collection#sort(List) Collections.sort} (és a {@link Arrays#sort(Object[]) Arrays.sort}) alapján. Ezt a felületet megvalósító objektumok kulcsokként használhatók a {@linkplain SortedMap sorted map} vagy elemekként a {@linkplain SortedSet sorted set}, anélkül, hogy meg kellene adni a {@linkplain Comparator comparator}-t.]]></programlisting>
     </section>
 
     <section>

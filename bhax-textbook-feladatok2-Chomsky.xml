@@ -176,7 +176,7 @@ int size = png_image.get_width()*png_image.get_height();
 
 Perceptron *p = new Perceptron(3, size, 256, 1);]]></programlisting>
 	<para>
-	Ezután egy double típusú változót hozzunk létre. Valamint a for ciklusok végig mennek a kép szélesség és maggasági pontokon. A képpontokat image tárolni fogja a képállomány vörös színkomponensét (mivel a kódban ezt adtuk meg). A value pedig azt a double típusú számot amit majd kiíratunk a végén.
+	Ezután egy double típusú változót hozzunk létre. Valamint a for ciklusok végig mennek a kép szélesség és maggasági pontokon. Miután végigmentünk a képpontokon, az image változó tárolni fogja a képállomány vörös színkomponensét. A value pedig azt a double típusú számot amit majd kiíratunk a végén.
 	</para>
 <programlisting language="java"><![CDATA[double* image = new double[size];
 for(int i = 0; i<png_inamge.get_width(); ++i)

@@ -44,6 +44,16 @@ Mutassunk rá ebben a port szkennelő forrásban a kivételkezelés szerepére!
 	Egy for ciklust látunk ami 1024-ig megy 0-tól, ezeken a portszámokon szereplő TCP kapukat fogjuk vizsgálni, pontosabban rajtuk keresztül kapcsolatot létrehozni. Ha a figyeli üzenetet kapjuk vissza az annyit jelent, hogy azon a porton "nyitott" a szerverrel való kapcoslat, ha pedig ez nem igaz lök egy exceptiont amiből mi annyit látunk hogy a "nem figyeli" üzenetet kapjuk vissza.
 	</para>
 	<para>
+	De beszéljünk egy kicsit a kivételkezelésről is. Akkor keletkezik kivétel ha a program végre hajtódásakor keletkező esemény megszakítja az utasítások végrehajtását. Tehát a try blokkban szereplő kódunkban valami hibát észlel, "megakad" ekkor ugrik át a catch blokkra ami kezeli a kivételeket, mi esetünkben az Exception  a paramétere, amely egy olyan kivételkezelési osztály ami magába foglalja az összes többi kivételkezelési osztályt. A programunkban ha az adott porton nem figyeli egyik folyamat sem akkor kivétel kerül eldobásra. Amit a catch blokk észlel és egy "figyelmeztető" kiírással jelzi is azt számunkra. A JDK-ban a kivételkezelésről találhatunk egy ilyet amit érdemes áttanulmányozni ugyan is mostani esetünknél is előjön egy része:
+	</para>
+<programlisting language="java"><![CDATA[public Socket(String host, int port)
+	throws UnknownHostException, IOException
+	{
+	   this(host != null ? new InetSocketAddress(host, port) :
+		new InetSocketAddress(InetAddress.getByName(null), port),
+		(SocketAddress) null, true); 
+	}]]></programlisting>
+	<para>
 	Kiemelendő viszont ennél a feladatnál hogy ne engedjük rá mindenre, hisz fenyegetésnek észlelhető, ezért csak saját gépre/szerverre, vagy ismert gépre/szerverre akivel megbeszéltük!
 	</para>
 	<para>Ha fordítjuk és futtatjuk a programunkat akkor a következőt fogjuk látni tehát:</para>

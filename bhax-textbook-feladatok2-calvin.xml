@@ -156,7 +156,25 @@ test_X = test_X.reshape(-1, 32,32, 3)]]></programlisting>
 	<para>
 	Ugye az első paraméter továbbra is -1 mert minden tagra értendő, a 2. és a 3. 32-re módosul mivel 32x32-es lesz a képek mérete, a 4. pedig 3-ra módosul mivel a képek színesek. 
 	</para>
-<programlisting language="c"><![CDATA[model.add(Conv2D(64, (3, 3), activation='relu', input_shape=(32, 32, 3)))]]></programlisting>
+<programlisting language="c"><![CDATA[model.add(Conv2D(64, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Flatten())
+model.add(Dense(256))
+model.add(Activation('relu'))
+
+model.add(Dense(10))
+model.add(Activation('softmax'))
+sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+model.compile(loss=keras.losses.categorical_crossentropy, optimizer=sgd,metrics=['accuracy'])
+img = Image.open('beagle.jpg').convert("L")
+img = np.resize(img,(32,32,3))
+im2arr = np.array(img)
+im2arr = im2arr.reshape(1,32,32,3)]]></programlisting>
+	<para>
+	Az add függvényt használjuk arra, hogy modellünkhöz újabb réteget adjunk hozzá. Például egy konvolúciós réteget adunk hozzá a modellünkhöz az első sorban. Amely paraméterül a neuronok számát kapja, majd az úgynevezett detektort pedig második paraméterként.
+	</para>
 	<para>Így az input_shape függvény paraméterei is változnak a mostani jellemzőknek megfelelően. Illetve emeltünk a neuron számon is.</para>
 <programlisting language="c"><![CDATA[cifar_classes = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 print(cifar_classes[np.argmax(np.round(predictions[0]))])]]></programlisting>

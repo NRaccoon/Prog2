@@ -239,6 +239,9 @@ for(int j=0; j<png_image.get_height(); ++j)
 
 png_image.write("output.png");]]></programlisting>
 	<para>
+	Kép generálást végzünk, a for ciklusok segítségével megkapja a megfelelő színadatokat. A write függvény pedig létre is hozza output néven a kimenetet png formátumban.
+	</para>
+	<para>
 	A kódunk végén pedig elvégezzük a szükséges hely felszabadítást a memóriában, amit a következő képpen teszünk:
 	</para>
 <programlisting language="java"><![CDATA[delete p;

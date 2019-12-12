@@ -217,7 +217,7 @@ Mutassuk be a Qt slot-signal mechanizmust ebben a projektben: <link xlink:href="
 
 }]]></programlisting>
 	<para>
-	Mint az a fenti példában látjuk a connect segítségével fog létrejönni a slot-signal párunk. Az első paraméter lesz az az objektum ami a signalt küldi, a második pedig maga a signál amit kezelni akarunk, a harmadik paraméter egy mutató ami a szignált kezelő objektumra mutat, a negyedik paraméter pedig a slot lesz.
+	Mint az a fenti példában látjuk a connect segítségével fog létrejönni a slot-signal párunk. A connect szintaktikája a következő: az első paraméter lesz az az objektum ami a signalt küldi, a második pedig maga a signál amit kezelni akarunk, a harmadik paraméter pedig egy mutató lesz ami a szignált kezelő objektumra mutat, a negyedik paraméter maga a slot lesz.
 	</para>
 <programlisting language="java"><![CDATA[        connect ( brainBThread, SIGNAL ( heroesChanged ( QImage, int, int ) ),
                   this, SLOT ( updateHeroes ( QImage, int, int ) ) );]]></programlisting>
